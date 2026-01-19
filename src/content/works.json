@@ -1,0 +1,33 @@
+[
+    {
+      "id": "placeholder-1",
+      "title": "（ここに代表作1）",
+      "category": "game",
+      "audience": "小学生〜中学生",
+      "oneLiner": "あとでリンクを貼る前提のダミー作品カードです。",
+      "thumb": "/works/sample.webp",
+      "links": { "play": "", "github": "", "note": "" },
+      "tags": ["学習ゲーム"]
+    },
+    {
+      "id": "placeholder-2",
+      "title": "（ここに代表作2）",
+      "category": "game",
+      "audience": "小学生〜中学生",
+      "oneLiner": "ゲームURLが揃ったら works.json に追記していくだけで増やせます。",
+      "thumb": "/works/sample.webp",
+      "links": { "play": "", "github": "", "note": "" },
+      "tags": ["漢字", "算数"]
+    },
+    {
+      "id": "mystery-coming-soon",
+      "title": "マーダーミステリー（準備中）",
+      "category": "mystery",
+      "audience": "一般",
+      "oneLiner": "将来、別系統のコンテンツも Works のカテゴリとして自然に追加できます。",
+      "thumb": "/works/sample.webp",
+      "links": { "play": "", "github": "", "note": "" },
+      "tags": ["マーダーミステリー"]
+    }
+  ]
+  
