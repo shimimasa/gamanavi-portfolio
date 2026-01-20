@@ -3,3 +3,12 @@
 @tailwind utilities;
 
 html, body { height: 100%; }
+
+/* ベースの可読性を底上げ（最小） */
+@layer base {
+      html {
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
