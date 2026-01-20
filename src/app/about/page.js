@@ -3,10 +3,10 @@ import profile from "@/content/profile.json";
 export default function AboutPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">About</h1>
+      <h1 className="text-2xl font-semibold">自己紹介</h1>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold">取り組み</h2>
+        <h2 className="text-lg font-semibold">取り組み・経歴</h2>
         <p className="mt-3 text-neutral-700">
           教育現場で使える学習ゲーム／教材を、継続的に開発しています。
           発達特性に配慮し、「短時間で達成感」「操作がシンプル」「視覚的に理解できる」設計を重視します。

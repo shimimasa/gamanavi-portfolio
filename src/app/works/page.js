@@ -18,9 +18,9 @@ export default function WorksPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">Works</h1>
+        <h1 className="text-2xl font-semibold">制作物</h1>
         <p className="mt-2 text-neutral-700">
-          学習ゲームを中心に、教材・ツール・マーダーミステリー等もカテゴリで拡張していきます。
+          AIを活用した学習ゲームを制作しています。
         </p>
         <div className="mt-3 text-sm text-neutral-500">
           表示：{filtered.length}件

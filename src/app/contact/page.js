@@ -3,7 +3,7 @@ import links from "@/content/links.json";
 export default function ContactPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Contact</h1>
+      <h1 className="text-2xl font-semibold">お問い合わせ</h1>
 
       <section className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
         <p className="text-neutral-700">
