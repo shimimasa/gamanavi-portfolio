@@ -2,15 +2,24 @@
 
 import Image from "next/image";
 
-function LinkButton({ href, children }) {
+function LinkButton({ href, children, variant = "secondary" }) {
   if (!href || href.trim().length === 0) return null;
+
+  const base =
+    "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2";
+
+  const styles =
+    variant === "primary"
+      ? "bg-neutral-900 text-white shadow-sm hover:bg-neutral-800 active:translate-y-px"
+      : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50";
+
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
       onClick={(e) => e.stopPropagation()}
-      className="inline-flex items-center justify-center rounded-md border border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-800 hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+      className={[base, styles].join(" ")}
     >
       {children}
     </a>
@@ -137,17 +146,23 @@ export default function WorkCard({ work }) {
           )}
         </div>
 
-        <div className="mt-auto flex flex-wrap gap-2 pt-4">
+        <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
           {/* 主ボタン（文言はUI側で固定。URLは links.play を参照） */}
           {isWip ? (
             <span className="inline-flex items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">
               🛠 ただいま つくっているよ
             </span>
           ) : (
-            <LinkButton href={playUrl}>▶ ゲームスタート！</LinkButton>
+            <LinkButton href={playUrl} variant="primary">
+                          ▶ ゲームスタート！
+                        </LinkButton>
           )}
-          <LinkButton href={work.links?.github}>GitHub</LinkButton>
-          <LinkButton href={work.links?.note}>note</LinkButton>
+          <LinkButton href={work.links?.github} variant="secondary">
+            GitHub
+          </LinkButton>
+          <LinkButton href={work.links?.note} variant="secondary">
+            note
+          </LinkButton>
         </div>
       </div>
     </article>
