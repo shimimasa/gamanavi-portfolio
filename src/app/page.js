@@ -18,7 +18,7 @@ export default function HomePage() {
         <p className="mt-4 text-base leading-relaxed text-neutral-700 sm:text-lg">
           小学生〜中学生向け。
           <br className="hidden sm:block" />
-          授業・支援教室・家庭学習で使える教材を、ゲームとして設計・開発しています。
+          授業・支援教室・家庭学習で使える教材をゲームとして設計・開発しています。
         </p>
 
         <div className="mt-5 flex flex-wrap items-center gap-2">
