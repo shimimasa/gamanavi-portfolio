@@ -3,8 +3,34 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "gamanavi portfolio",
-  description: "教育現場で“回る”学習ゲーム／教材のポートフォリオ"
+  metadataBase: new URL("https://gamanavi-portfolio.vercel.app"),
+  title: {
+    default: "gamanavi / portfolio",
+    template: "%s | gamanavi / portfolio",
+  },
+  description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+  openGraph: {
+    type: "website",
+    locale: "ja_JP",
+    siteName: "gamanavi / portfolio",
+    title: "gamanavi / portfolio",
+    description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+    url: "/",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "gamanavi / portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "gamanavi / portfolio",
+    description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
