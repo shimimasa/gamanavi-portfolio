@@ -12,7 +12,7 @@ export default function HomePage() {
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
         {/* Step1: ファーストビューを「3秒で伝わる」形に寄せる */}
         <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          教育現場で「回る」学習ゲームを作っています
+          教育現場で活用できる学習ゲーム／教材のポートフォリオ
         </h1>
 
         <p className="mt-4 text-base leading-relaxed text-neutral-700 sm:text-lg">
@@ -44,32 +44,36 @@ export default function HomePage() {
         
             作品を見る
           </Link>
-          <a
-            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
-            href={links.x}
-            target="_blank"
-            rel="noreferrer"
+          
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-900 hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
           >
+            連絡する
+          </Link>
+        </div>
+
+        {/* 参考リンクは小さめで表示 */}
+        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-neutral-600">
+          <a className="hover:underline" href={links.x} target="_blank" rel="noreferrer">
             X（最新）
           </a>
-          <a
-            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
-            href={links.note}
-            target="_blank"
-            rel="noreferrer"
-          >
-             note（制作記録）
+          <a className="hover:underline" href={links.note} target="_blank" rel="noreferrer">
+            note（制作記録）
           </a>
         </div>
       </section>
 
       <section>
-        <div className="mb-4 flex items-end justify-between">
-          <h2 className="text-xl font-semibold">代表作</h2>
+      <div className="mb-4 flex items-end justify-between">
+                <h2 className="text-xl font-semibold">代表作</h2>
           <Link href="/works" className="text-sm text-neutral-700 hover:underline">
             すべて見る
           </Link>
         </div>
+        <p className="mb-5 text-sm text-neutral-600">
+          授業・支援教室での試作→改善を経た作品から順に掲載します。
+        </p>
         <WorkGrid works={works} />
       </section>
     </div>
