@@ -12,14 +12,22 @@ export default function Header() {
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2";
   const active =
     "bg-neutral-900 text-white hover:bg-neutral-900 hover:text-white";
+
+    const brand =
+        "inline-flex items-center gap-2 rounded-lg px-2 py-1 text-neutral-900 " +
+        "hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2";
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
         <Link
           href="/"
-          className="whitespace-nowrap font-semibold tracking-tight text-neutral-900"
+          aria-label="Homeへ戻る"
+          className={`${brand} whitespace-nowrap font-semibold tracking-tight`}
         >
-          gamanavi / portfolio
+          <span>gamanavi / 学習ゲーム置き場</span>
+          <span className="hidden sm:inline text-xs font-medium text-neutral-500">
+            Home
+          </span>
         </Link>
         <nav className="flex flex-wrap items-center gap-2">
           <Link
