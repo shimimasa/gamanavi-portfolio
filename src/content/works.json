@@ -2,31 +2,34 @@
     {
       "id": "placeholder-1",
       "title": "漢字ヨミタビ",
+      "subtitle": "〜モンスターと旅する漢字バトル〜",
       "category": "game",
-      "audience": "小学生〜中学生",
-      "oneLiner": "漢字の読みを答えて、全国・世界のモンスターを仲間にするゲームです。47都道府県・世界各国の特色も学べます。",
+      "audience": "🎮 小学生〜中学生向け",
+      "oneLiner": "漢字の読みを答えて、モンスターを仲間にしながら旅しよう！",
       "thumb": "/works/placeholder-1.webp",
-      "links": { "play": "https://yomitabi.gamanavi.com/", "github": "", "note": "" },
+      "links": { "ゲームスタート！": "https://yomitabi.gamanavi.com/", "github": "", "note": "" },
       "tags": ["国語", "社会", "漢字"]
     },
     {
       "id": "placeholder-2",
       "title": "ねこもじなぞり",
+      "subtitle": "〜ねこと一緒に もじをなぞろう〜",
       "category": "game",
-      "audience": "小学生〜中学生",
-      "oneLiner": "お手本にそって、ねこをおいかけるゲームです。　ひらがな、カタカナ、小1~中3までの漢字の書き順とアルファベットを学べます。",
+      "audience": "🎮 小学生〜中学生向け",
+      "oneLiner": "ねこと一緒に、もじをなぞってあそぼう！",
       "thumb": "/works/placeholder-2.webp",
-      "links": { "play": "https://cat.word.trace.gamanavi.com/", "github": "", "note": "" },
+      "links": { "ゲームスタート！": "https://cat.word.trace.gamanavi.com/", "github": "", "note": "" },
       "tags": ["ひらがな", "カタカナ", "漢字"]
     },
     {
       "id": "mystery-coming-soon",
       "title": "計算ピラミッド",
+      "subtitle": "〜数の法則を見つけよう〜",
       "category": "game",
-      "audience": "一般",
-      "oneLiner": "作成中...",
+      "audience": "🎮 小学生〜中学生向け",
+      "oneLiner": "ピラミッドをのぼりながら、計算にチャレンジ！",
       "thumb": "/works/sample.webp",
-      "links": { "play": "", "github": "", "note": "" },
+      "links": { "ゲームスタート！": "", "github": "", "note": "" },
       "tags": ["算数"]
     }
   ]

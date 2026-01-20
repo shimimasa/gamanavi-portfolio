@@ -18,12 +18,12 @@ export default function HomePage() {
           <div className="sm:col-span-7">
             {/* Step1: ファーストビューを「3秒で伝わる」形に寄せる */}
             <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
-              楽しく学べるゲーム
+            あそびながら、ぐんぐん学べる！
             </h1>
 
             <p className="mt-2 text-base leading-relaxed text-neutral-700">
-              <li>小学生〜中学生向け。</li>
-              <li>授業・支援教室・家庭学習で使える学習ゲームを公開しています。</li>
+              <li>小学生〜中学生向けの学習ゲーム。</li>
+              <li>授業・支援教室・おうち学習で、たのしく使えます。</li>
             </p>
 
             <div className="mt-2 flex flex-wrap items-center gap-2">
