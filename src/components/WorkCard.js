@@ -20,11 +20,22 @@ function LinkButton({ href, children }) {
 export default function WorkCard({ work }) {
 
   const hasThumb = typeof work.thumb === "string" && work.thumb.trim().length > 0;
-  const tags = Array.isArray(work.tags) ? work.tags : [];
-  const shownTags = tags.slice(0, 3);
-  const remainingTags = tags.length - shownTags.length;
+  const subtitle = typeof work.subtitle === "string" ? work.subtitle.trim() : "";
+
+  // tags は旧仕様（後方互換）。新仕様は subjectTags / featureTags。
+  const legacyTags = Array.isArray(work.tags) ? work.tags : [];
+  const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : legacyTags;
+  const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
+
+  const shownSubjectTags = subjectTags.slice(0, 3);
+  const remainingSubject = subjectTags.length - shownSubjectTags.length;
+
+  const shownFeatureTags = featureTags.slice(0, 3);
+  const remainingFeature = featureTags.length - shownFeatureTags.length;
+
   const playUrl = work.links?.play?.trim?.() ? work.links.play.trim() : "";
-  const isClickable = playUrl.length > 0;
+  const isWip = work.status === "wip" || playUrl.length === 0;
+  const isClickable = !isWip && playUrl.length > 0;
 
   const handleCardClick = () => {
     if (!isClickable) return;
@@ -67,14 +78,19 @@ export default function WorkCard({ work }) {
       {/* 本文エリア：ボタン群を常に下端に固定する */}
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-center justify-between gap-2">
-          <div className="text-xs text-neutral-500">{work.audience}</div>
-          {!isClickable && (
+        <div className="text-xs text-neutral-500">🎮 {work.audience}</div>
+                  {isWip && (
             <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-600">
-              準備中
+              🛠 ただいま つくっているよ
             </span>
           )}
         </div>
         <h3 className="mt-1 line-clamp-2 text-base font-semibold">{work.title}</h3>
+        {subtitle.length > 0 && (
+          <div className="mt-1 line-clamp-1 text-xs text-neutral-600">
+            {subtitle}
+          </div>
+        )}
         {work.oneLiner ? (
           <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-700">{work.oneLiner}</p>
         ) : (
@@ -82,25 +98,54 @@ export default function WorkCard({ work }) {
             近日、説明文を追加予定です。
           </p>
         )}
+{/* タグ（上：教科 / 下：体験） */}
+        <div className="mt-3 space-y-2">
+          {shownSubjectTags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {shownSubjectTags.map((t) => (
+                <span
+                  key={`subject-${t}`}
+                  className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+                >
+                  {t}
+                </span>
+              ))}
+              {remainingSubject > 0 && (
+                <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+                  +{remainingSubject}
+                </span>
+              )}
+            </div>
+          )}
 
-<div className="mt-3 flex flex-wrap gap-2">
-          {shownTags.map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
-            >
-              {t}
-            </span>
-          ))}
-          {remainingTags > 0 && (
-            <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
-              +{remainingTags}
-            </span>
+          {shownFeatureTags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {shownFeatureTags.map((t) => (
+                <span
+                  key={`feature-${t}`}
+                  className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+                >
+                  {t}
+                </span>
+              ))}
+              {remainingFeature > 0 && (
+                <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+                  +{remainingFeature}
+                </span>
+              )}
+            </div>
           )}
         </div>
 
-        <div className="mt-auto pt-4 flex flex-wrap gap-2">
-          <LinkButton href={work.links?.play}>Play</LinkButton>
+        <div className="mt-auto flex flex-wrap gap-2 pt-4">
+          {/* 主ボタン（文言はUI側で固定。URLは links.play を参照） */}
+          {isWip ? (
+            <span className="inline-flex items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">
+              🛠 ただいま つくっているよ
+            </span>
+          ) : (
+            <LinkButton href={playUrl}>▶ ゲームスタート！</LinkButton>
+          )}
           <LinkButton href={work.links?.github}>GitHub</LinkButton>
           <LinkButton href={work.links?.note}>note</LinkButton>
         </div>
