@@ -46,6 +46,14 @@ export default function WorkCard({ work }) {
   const isWip = work.status === "wip" || playUrl.length === 0;
   const isClickable = !isWip && playUrl.length > 0;
 
+  // バッジ（データで指定があれば優先。なければ状態で自動付与）
+  const badgeText =
+    typeof work.badge === "string" && work.badge.trim().length > 0
+      ? work.badge.trim()
+      : isWip
+      ? "準備中"
+      : "NEW";
+
   const handleCardClick = () => {
     if (!isClickable) return;
     window.open(playUrl, "_blank", "noreferrer");
@@ -85,7 +93,7 @@ export default function WorkCard({ work }) {
         )}
       </div>
       {/* 本文エリア：ボタン群を常に下端に固定する */}
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center justify-between gap-2">
         <div className="text-xs text-neutral-500">🎮 {work.audience}</div>
                   {isWip && (
@@ -114,13 +122,13 @@ export default function WorkCard({ work }) {
               {shownSubjectTags.map((t) => (
                 <span
                   key={`subject-${t}`}
-                  className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
-                >
+                  className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800"
+                 >
                   {t}
                 </span>
               ))}
               {remainingSubject > 0 && (
-                <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+                <span className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800">
                   +{remainingSubject}
                 </span>
               )}
@@ -132,13 +140,13 @@ export default function WorkCard({ work }) {
               {shownFeatureTags.map((t) => (
                 <span
                   key={`feature-${t}`}
-                  className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+                  className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800"
                 >
                   {t}
                 </span>
               ))}
               {remainingFeature > 0 && (
-                <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+                <span className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800">
                   +{remainingFeature}
                 </span>
               )}
@@ -146,23 +154,27 @@ export default function WorkCard({ work }) {
           )}
         </div>
 
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-4">
+        {/* ボタン行：主ボタンを固定的に目立たせ、1段に寄せる */}
+        <div className="mt-auto flex flex-wrap items-center gap-2 pt-5">
           {/* 主ボタン（文言はUI側で固定。URLは links.play を参照） */}
           {isWip ? (
-            <span className="inline-flex items-center justify-center rounded-md border border-neutral-200 bg-neutral-100 px-3 py-1 text-sm font-medium text-neutral-500">
-              🛠 ただいま つくっているよ
+            <span className="inline-flex min-h-[40px] flex-1 items-center justify-center rounded-lg border border-neutral-200 bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-500">
+               🛠 ただいま つくっているよ
             </span>
           ) : (
-            <LinkButton href={playUrl} variant="primary">
+            <div className="flex-1 min-w-[180px]">              <LinkButton href={playUrl} variant="primary">
                           ▶ ゲームスタート！
                         </LinkButton>
+          </div>
           )}
-          <LinkButton href={work.links?.github} variant="secondary">
-            GitHub
-          </LinkButton>
-          <LinkButton href={work.links?.note} variant="secondary">
-            note
-          </LinkButton>
+          <div className="flex flex-wrap gap-2">
+            <LinkButton href={work.links?.github} variant="secondary">
+              GitHub
+            </LinkButton>
+            <LinkButton href={work.links?.note} variant="secondary">
+              note
+            </LinkButton>
+          </div>
         </div>
       </div>
     </article>
