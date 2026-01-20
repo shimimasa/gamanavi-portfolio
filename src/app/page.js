@@ -64,16 +64,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section>
-      <div className="mb-4 flex items-end justify-between">
-                <h2 className="text-xl font-semibold">代表作</h2>
+     {/* Works: ここから「作品」エリアとして面で区切る */}
+      <section className="rounded-3xl border border-neutral-200/60 bg-neutral-50/80 p-6 shadow-sm sm:p-10">
+        <div className="mb-4 flex items-end justify-between">
+          <h2 className="text-xl font-semibold">代表作</h2>
           <Link href="/works" className="text-sm text-neutral-700 hover:underline">
             すべて見る
           </Link>
         </div>
+
         <p className="mb-5 text-sm text-neutral-600">
           授業・支援教室での試作→改善を経た作品から順に掲載します。
         </p>
+
+        {/* 上品な区切り（薄い線） */}
+        <div className="mb-6 h-px w-full bg-neutral-200/60" />
+
         <WorkGrid works={works} />
       </section>
     </div>
