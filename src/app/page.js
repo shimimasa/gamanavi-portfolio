@@ -18,7 +18,7 @@ export default function HomePage() {
           <div className="sm:col-span-7">
             {/* Step1: ファーストビューを「3秒で伝わる」形に寄せる */}
             <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
-              楽しく学べるゲーム集
+              楽しく学べるゲーム
             </h1>
 
             <p className="mt-2 text-base leading-relaxed text-neutral-700">
