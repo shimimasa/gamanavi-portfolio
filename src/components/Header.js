@@ -35,21 +35,21 @@ export default function Header() {
             className={`${base} ${isActive("/works") ? active : ""}`}
             aria-current={isActive("/works") ? "page" : undefined}
           >
-            Works
+            制作物
           </Link>
           <Link
             href="/about"
             className={`${base} ${isActive("/about") ? active : ""}`}
             aria-current={isActive("/about") ? "page" : undefined}
           >
-            About
+            自己紹介
           </Link>
           <Link
             href="/contact"
             className={`${base} ${isActive("/contact") ? active : ""}`}
             aria-current={isActive("/contact") ? "page" : undefined}
           >
-            Contact
+            お問い合わせ
           </Link>
         </nav>
       </div>
