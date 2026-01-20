@@ -11,7 +11,7 @@ export default function AboutPage() {
           教育現場で使える学習ゲーム／教材を、継続的に開発しています。
           発達特性に配慮し、「短時間で達成感」「操作がシンプル」「視覚的に理解できる」設計を重視します。
         </p>
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-auto pt-4 flex flex-wrap gap-2">
           {profile.focus.map((f) => (
             <span key={f} className="rounded-full bg-neutral-100 px-3 py-1 text-sm">
               {f}

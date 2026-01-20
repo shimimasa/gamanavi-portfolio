@@ -64,8 +64,9 @@ export default function WorkCard({ work }) {
        
         )}
       </div>
-      <div className="flex h-full flex-col p-4">
-      <div className="flex items-center justify-between gap-2">
+      {/* 本文エリア：ボタン群を常に下端に固定する */}
+      <div className="flex flex-1 flex-col p-4">
+        <div className="flex items-center justify-between gap-2">
           <div className="text-xs text-neutral-500">{work.audience}</div>
           {!isClickable && (
             <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-600">
@@ -82,12 +83,12 @@ export default function WorkCard({ work }) {
           </p>
         )}
 
-        <div className="mt-3 flex flex-wrap gap-2">
-        {shownTags.map((t) => (
+<div className="mt-3 flex flex-wrap gap-2">
+          {shownTags.map((t) => (
             <span
-            key={t}
-                          className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
-                        >
+              key={t}
+              className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+            >
               {t}
             </span>
           ))}
@@ -98,7 +99,7 @@ export default function WorkCard({ work }) {
           )}
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-auto pt-4 flex flex-wrap gap-2">
           <LinkButton href={work.links?.play}>Play</LinkButton>
           <LinkButton href={work.links?.github}>GitHub</LinkButton>
           <LinkButton href={work.links?.note}>note</LinkButton>
