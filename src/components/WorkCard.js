@@ -34,7 +34,7 @@ export default function WorkCard({ work }) {
   return (
     <article
       className={[
-        "overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition",
+        "overflow-hidden rounded-2xl border border-neutral-200/70 bg-white shadow-sm transition",
         isClickable ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-md" : "",
       ].join(" ")}
       onClick={handleCardClick}
