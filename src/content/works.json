@@ -4,20 +4,20 @@
       "title": "漢字ヨミタビ",
       "category": "game",
       "audience": "小学生〜中学生",
-      "oneLiner": "漢字の読みを答えて、全国・世界のモンスターを仲間にするゲームです。漢字の音読みと訓読みだけでなく、47都道府県・世界各国の特色を学べます。",
+      "oneLiner": "漢字の読みを答えて、全国・世界のモンスターを仲間にするゲームです。47都道府県・世界各国の特色も学べます。",
       "thumb": "/works/placeholder-1.webp",
       "links": { "play": "https://yomitabi.gamanavi.com/", "github": "", "note": "" },
-      "tags": ["国語", "社会", "漢字", "学習ゲーム"]
+      "tags": ["国語", "社会", "漢字"]
     },
     {
       "id": "placeholder-2",
       "title": "ねこもじなぞり",
       "category": "game",
       "audience": "小学生〜中学生",
-      "oneLiner": "お手本にそって、ねこをおいかけるゲームです。ひらがな、カタカナ、小1~中3までの漢字の書き順とアルファベットを学べます。",
+      "oneLiner": "お手本にそって、ねこをおいかけるゲームです。　ひらがな、カタカナ、小1~中3までの漢字の書き順とアルファベットを学べます。",
       "thumb": "/works/placeholder-2.webp",
       "links": { "play": "https://cat.word.trace.gamanavi.com/", "github": "", "note": "" },
-      "tags": ["ひらがな", "カタカナ", "アルファベット", "漢字","学習ゲーム"]
+      "tags": ["ひらがな", "カタカナ", "漢字"]
     },
     {
       "id": "mystery-coming-soon",
