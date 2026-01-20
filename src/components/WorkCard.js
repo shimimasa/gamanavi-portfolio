@@ -7,7 +7,7 @@ function LinkButton({ href, children }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="rounded-md border border-neutral-300 px-3 py-1 text-sm hover:border-neutral-900"
+      className="inline-flex items-center justify-center rounded-md border border-neutral-300 px-3 py-1 text-sm font-medium text-neutral-800 hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
     >
       {children}
     </a>
@@ -15,26 +15,50 @@ function LinkButton({ href, children }) {
 }
 
 export default function WorkCard({ work }) {
+
+  const hasThumb = typeof work.thumb === "string" && work.thumb.trim().length > 0;
   return (
-    <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
+    <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative aspect-[16/9] bg-neutral-100">
-        <Image
-          src={work.thumb}
-          alt={work.title}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 33vw"
-          priority={false}
-        />
+        {hasThumb ? (
+          <Image
+            src={work.thumb}
+            alt={work.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+            priority={false}
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col justify-end p-4">
+            <div className="text-xs font-medium text-neutral-500">{work.audience ?? ""}</div>
+            <div className="mt-1 line-clamp-2 text-base font-semibold text-neutral-900">
+              {work.title}
+            </div>
+            <div className="mt-2 text-xs text-neutral-500">
+              サムネイル準備中
+            </div>
+          </div>
+       
+        )}
       </div>
       <div className="p-4">
         <div className="text-xs text-neutral-500">{work.audience}</div>
         <h3 className="mt-1 text-base font-semibold">{work.title}</h3>
-        <p className="mt-2 text-sm text-neutral-700">{work.oneLiner}</p>
+        {work.oneLiner ? (
+          <p className="mt-2 text-sm leading-relaxed text-neutral-700">{work.oneLiner}</p>
+        ) : (
+          <p className="mt-2 text-sm leading-relaxed text-neutral-500">
+            近日、説明文を追加予定です。
+          </p>
+        )}
 
         <div className="mt-3 flex flex-wrap gap-2">
           {(work.tags ?? []).slice(0, 4).map((t) => (
-            <span key={t} className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+            <span
+                          key={t}
+                          className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+                        >
               {t}
             </span>
           ))}
