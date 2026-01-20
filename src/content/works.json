@@ -1,21 +1,21 @@
 [
     {
       "id": "placeholder-1",
-      "title": "（ここに代表作1）",
+      "title": "漢字ヨミタビ",
       "category": "game",
       "audience": "小学生〜中学生",
       "oneLiner": "あとでリンクを貼る前提のダミー作品カードです。",
-      "thumb": "/works/sample.webp",
+      "thumb": "/works/placeholder-1.webp",
       "links": { "play": "", "github": "", "note": "" },
       "tags": ["学習ゲーム"]
     },
     {
       "id": "placeholder-2",
-      "title": "（ここに代表作2）",
+      "title": "ねこもじなぞり",
       "category": "game",
       "audience": "小学生〜中学生",
       "oneLiner": "ゲームURLが揃ったら works.json に追記していくだけで増やせます。",
-      "thumb": "/works/sample.webp",
+      "thumb": "/works/placeholder-2.webp",
       "links": { "play": "", "github": "", "note": "" },
       "tags": ["漢字", "算数"]
     },

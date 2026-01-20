@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 function LinkButton({ href, children }) {
-  if (!href) return null;
+  if (!href || href.trim().length === 0) return null;
   return (
     <a
       href={href}
@@ -17,6 +17,10 @@ function LinkButton({ href, children }) {
 export default function WorkCard({ work }) {
 
   const hasThumb = typeof work.thumb === "string" && work.thumb.trim().length > 0;
+  const tags = Array.isArray(work.tags) ? work.tags : [];
+  const shownTags = tags.slice(0, 3);
+  const remainingTags = tags.length - shownTags.length;
+
   return (
     <article className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative aspect-[16/9] bg-neutral-100">
@@ -42,11 +46,11 @@ export default function WorkCard({ work }) {
        
         )}
       </div>
-      <div className="p-4">
+      <div className="flex h-full flex-col p-4">
         <div className="text-xs text-neutral-500">{work.audience}</div>
-        <h3 className="mt-1 text-base font-semibold">{work.title}</h3>
+        <h3 className="mt-1 line-clamp-2 text-base font-semibold">{work.title}</h3>
         {work.oneLiner ? (
-          <p className="mt-2 text-sm leading-relaxed text-neutral-700">{work.oneLiner}</p>
+          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-700">{work.oneLiner}</p>
         ) : (
           <p className="mt-2 text-sm leading-relaxed text-neutral-500">
             近日、説明文を追加予定です。
@@ -54,14 +58,19 @@ export default function WorkCard({ work }) {
         )}
 
         <div className="mt-3 flex flex-wrap gap-2">
-          {(work.tags ?? []).slice(0, 4).map((t) => (
+        {shownTags.map((t) => (
             <span
-                          key={t}
+            key={t}
                           className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
                         >
               {t}
             </span>
           ))}
+          {remainingTags > 0 && (
+            <span className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700">
+              +{remainingTags}
+            </span>
+          )}
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2">
