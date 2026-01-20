@@ -21,13 +21,13 @@
     },
     {
       "id": "mystery-coming-soon",
-      "title": "マーダーミステリー（準備中）",
+      "title": "計算ピラミッド",
       "category": "mystery",
       "audience": "一般",
       "oneLiner": "将来、別系統のコンテンツも Works のカテゴリとして自然に追加できます。",
       "thumb": "/works/sample.webp",
       "links": { "play": "", "github": "", "note": "" },
-      "tags": ["マーダーミステリー"]
+      "tags": ["算数"]
     }
   ]
   
