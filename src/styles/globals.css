@@ -1,3 +1,15 @@
+@import "tailwindcss";
+
+/* まず “見る場所” を src に限定 */
+@source "./src/**/*.{js,ts,jsx,tsx,mdx,css}";
+
+/* 事故りやすい場所を明示的に除外（必要に応じて追加） */
+@source not "./.cursor/**";
+@source not "./.git/**";
+@source not "./node_modules/**";
+@source not "./.next/**";
+@source not "./.vercel/**";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
