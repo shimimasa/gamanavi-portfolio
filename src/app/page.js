@@ -5,23 +5,26 @@ import { getWorks } from "@/lib/works";
 import WorkGrid from "@/components/WorkGrid";
 
 export default function HomePage() {
-  const works = getWorks().slice(0, 3);
+  // Homeでは「代表作」までファーストビューに収めることを優先し、表示数を絞る
+  const works = getWorks().slice(0, 2);
 
   return (
-    <div className="space-y-12">
-      <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
+    // PCでは2カラムにして、ファーストビュー内で「代表作」まで見せる
+    <div className="space-y-6 lg:grid lg:grid-cols-12 lg:gap-6 lg:space-y-0">
+      <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10 lg:col-span-7">
+    
         {/* Step1: ファーストビューを「3秒で伝わる」形に寄せる */}
         <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          教育現場で活用できる学習ゲーム／教材のポートフォリオ
+          教育現場で活用できる学習ゲーム集
         </h1>
 
-        <p className="mt-4 text-base leading-relaxed text-neutral-700 sm:text-lg">
+        <p className="mt-3 text-base leading-relaxed text-neutral-700 sm:mt-4 sm:text-lg">
           小学生〜中学生向け。
           <br className="hidden sm:block" />
           授業・支援教室・家庭学習で使える教材をゲームとして設計・開発しています。
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-700">
             教育 × ゲーム × AI
           </span>
@@ -29,14 +32,14 @@ export default function HomePage() {
           <span className="text-sm text-neutral-500">{profile.name}</span>
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           {profile.focus.map((f) => (
             <span key={f} className="rounded-full bg-neutral-100 px-3 py-1 text-sm">
               {f}
             </span>
           ))}
         </div>
-        <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-wrap gap-3">
           <Link
             href="/works"
             className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
@@ -54,7 +57,7 @@ export default function HomePage() {
         </div>
 
         {/* 参考リンクは小さめで表示 */}
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-neutral-600">
+        <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-neutral-600 sm:mt-4">
           <a className="hover:underline" href={links.x} target="_blank" rel="noreferrer">
             X（最新）
           </a>
@@ -65,20 +68,20 @@ export default function HomePage() {
       </section>
 
      {/* Works: ここから「作品」エリアとして面で区切る */}
-      <section className="rounded-3xl border border-neutral-200/60 bg-neutral-50/80 p-6 shadow-sm sm:p-10">
-        <div className="mb-4 flex items-end justify-between">
-          <h2 className="text-xl font-semibold">代表作</h2>
+     <section className="rounded-3xl border border-neutral-200/60 bg-neutral-50/80 p-6 shadow-sm sm:p-10 lg:col-span-5">
+             <div className="mb-3 flex items-end justify-between">
+          <h2 className="text-xl font-semibold">制作物</h2>
           <Link href="/works" className="text-sm text-neutral-700 hover:underline">
             すべて見る
           </Link>
         </div>
 
-        <p className="mb-5 text-sm text-neutral-600">
+        <p className="mb-4 text-sm text-neutral-600">
           授業・支援教室での試作→改善を経た作品から順に掲載します。
         </p>
 
         {/* 上品な区切り（薄い線） */}
-        <div className="mb-6 h-px w-full bg-neutral-200/60" />
+        <div className="mb-4 h-px w-full bg-neutral-200/60" />
 
         <WorkGrid works={works} />
       </section>
