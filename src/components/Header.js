@@ -13,11 +13,15 @@ export default function Header() {
   const active =
     "bg-neutral-900 text-white hover:bg-neutral-900 hover:text-white";
   return (
-    <header className="border-b border-neutral-200 bg-white/70 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link href="/" className="font-semibold tracking-tight text-neutral-900">gamanavi / portfolio
+    <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
+        <Link
+          href="/"
+          className="whitespace-nowrap font-semibold tracking-tight text-neutral-900"
+        >
+          gamanavi / portfolio
         </Link>
-        <nav className="flex items-center gap-1">
+        <nav className="flex flex-wrap items-center gap-2">
           <Link
             href="/works"
             className={`${base} ${isActive("/works") ? active : ""}`}

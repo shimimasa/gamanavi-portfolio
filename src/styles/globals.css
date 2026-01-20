@@ -6,9 +6,15 @@ html, body { height: 100%; }
 
 /* ベースの可読性を底上げ（最小） */
 @layer base {
-      html {
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
+    html {
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+   }
+    body {
+      @apply bg-neutral-50 text-neutral-900;
     }
+    a {
+      @apply text-inherit;
+    }
+  }

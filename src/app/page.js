@@ -8,8 +8,8 @@ export default function HomePage() {
   const works = getWorks().slice(0, 3);
 
   return (
-    <div className="space-y-10">
-       <section className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-10">
+    <div className="space-y-12">
+      <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
         {/* Step1: ファーストビューを「3秒で伝わる」形に寄せる */}
         <h1 className="text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">
           教育現場で「回る」学習ゲームを作っています
@@ -39,13 +39,13 @@ export default function HomePage() {
         <div className="mt-7 flex flex-wrap gap-3">
           <Link
             href="/works"
-            className="rounded-lg bg-neutral-900 px-4 py-2 text-sm text-white hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
           >
         
             作品を見る
           </Link>
           <a
-            className="rounded-lg border border-neutral-300 px-4 py-2 text-sm hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
             href={links.x}
             target="_blank"
             rel="noreferrer"
@@ -53,7 +53,7 @@ export default function HomePage() {
             X（最新）
           </a>
           <a
-            className="rounded-lg border border-neutral-300 px-4 py-2 text-sm hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            className="inline-flex items-center justify-center rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium hover:border-neutral-900 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
             href={links.note}
             target="_blank"
             rel="noreferrer"
