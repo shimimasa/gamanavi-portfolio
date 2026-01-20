@@ -22,9 +22,9 @@
     {
       "id": "mystery-coming-soon",
       "title": "計算ピラミッド",
-      "category": "mystery",
+      "category": "game",
       "audience": "一般",
-      "oneLiner": "将来、別系統のコンテンツも Works のカテゴリとして自然に追加できます。",
+      "oneLiner": "作成中...",
       "thumb": "/works/sample.webp",
       "links": { "play": "", "github": "", "note": "" },
       "tags": ["算数"]
