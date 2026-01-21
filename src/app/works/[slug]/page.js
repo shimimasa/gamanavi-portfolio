@@ -70,7 +70,7 @@ export default function WorkDetailPage({ params }) {
                 </span>
               ) : (
                 <a
-                  href={work.links.play}
+                href={playUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
