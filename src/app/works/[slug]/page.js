@@ -21,9 +21,13 @@ function chip(text) {
   );
 }
 
-export default function WorkDetailPage({ params }) {
-  const workSlug = params?.slug;
-  const work = works.find((w) => w.slug === workSlug);
+export default async function WorkDetailPage({ params }) {
+  // Next.jsのバージョン/レンダリング状況によっては params が Promise で渡るケースがあるため await して吸収する
+  const resolvedParams = await params;
+  const workSlug =
+    typeof resolvedParams?.slug === "string" ? resolvedParams.slug.trim() : "";
+
+  const work = works.find((w) => (typeof w.slug === "string" ? w.slug.trim() : "") === workSlug);
   if (!work) return notFound();
 
   const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
