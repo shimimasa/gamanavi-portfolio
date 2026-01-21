@@ -161,7 +161,7 @@ export default function WorkDetailPage({ params }) {
 
      {/* あそび方 */}
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
-+        <h2 className="text-xl font-semibold">あそび方（かんたん3ステップ）</h2>
+        <h2 className="text-xl font-semibold">あそび方（かんたん3ステップ）</h2>
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-neutral-800">
           <li>「▶ ゲームスタート！」を押す</li>
           <li>もんだいを見て、よみを入力する</li>
