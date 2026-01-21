@@ -22,6 +22,15 @@ function chip(text) {
 }
 
 export default async function WorkDetailPage({ params }) {
+  const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
+  const defaultLearningBody =
+    "漢字の読みを短いサイクルで反復しながら、全国・世界のモチーフに触れられます。「正解→報酬（仲間が増える）」の構造で意欲が続きやすい設計です。";
+  const defaultHowToPlay = [
+    "「▶ ゲームスタート！」を押す",
+    "もんだいを見て、よみを入力する",
+    "正解したら、モンスターが仲間になる！",
+  ];
+
   // Next.jsのバージョン/レンダリング状況によっては params が Promise で渡るケースがあるため await して吸収する
   const resolvedParams = await params;
   const workSlug =
@@ -34,6 +43,17 @@ export default async function WorkDetailPage({ params }) {
   const isWip = work.status === "wip" || playUrl.length === 0;
   const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : [];
   const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
+
+  const canDo =
+    Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : defaultCanDo;
+  const learningBody =
+    typeof work.learning?.body === "string" && work.learning.body.trim().length > 0
+      ? work.learning.body.trim()
+      : defaultLearningBody;
+  const howToPlay =
+    Array.isArray(work.howToPlay) && work.howToPlay.length > 0
+      ? work.howToPlay
+      : defaultHowToPlay;
 
   return (
     <div className="space-y-6">
@@ -133,9 +153,9 @@ export default async function WorkDetailPage({ params }) {
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
         <h2 className="text-xl font-semibold">できること</h2>
         <ul className="mt-4 list-disc space-y-2 pl-5 text-neutral-800">
-          <li>よみを当てる</li>
-          <li>モンスターを仲間にする</li>
-          <li>旅してステージを進める</li>
+          {canDo.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
         </ul>
       </section>
 
@@ -150,8 +170,7 @@ export default async function WorkDetailPage({ params }) {
           ))}
         </div>
         <p className="mt-4 text-neutral-700">
-          漢字の読みを短いサイクルで反復しながら、全国・世界のモチーフに触れられます。
-          「正解→報酬（仲間が増える）」の構造で意欲が続きやすい設計です。
+          {learningBody}
         </p>
         {featureTags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
@@ -168,9 +187,9 @@ export default async function WorkDetailPage({ params }) {
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
         <h2 className="text-xl font-semibold">あそび方（かんたん3ステップ）</h2>
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-neutral-800">
-          <li>「▶ ゲームスタート！」を押す</li>
-          <li>もんだいを見て、よみを入力する</li>
-          <li>正解したら、モンスターが仲間になる！</li>
+          {howToPlay.map((t) => (
+            <li key={t}>{t}</li>
+          ))}
         </ol>
       </section>
 
