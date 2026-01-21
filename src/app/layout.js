@@ -3,32 +3,32 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  metadataBase: new URL("https://gamanavi-portfolio.vercel.app"),
+  metadataBase: new URL("https://www.gamanavi.com"),
   title: {
-    default: "gamanavi / portfolio",
-    template: "%s | gamanavi / portfolio",
+    default: "学習に困り感のある子どものための教育ゲーム開発ポートフォリオ｜gamanavi",
+    template: "%s｜gamanavi",
   },
-  description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+  description: "学習に困り感のある子ども向けに、漢字や計算をテーマとした教育ゲームを個人開発。設計思想と実際に遊べる作品を紹介しています。",
   openGraph: {
     type: "website",
     locale: "ja_JP",
     siteName: "gamanavi / portfolio",
-    title: "gamanavi / portfolio",
-    description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+    title: "学習に困り感のある子どものための教育ゲーム開発ポートフォリオ｜gamanavi",
+    description: "学習に困り感のある子ども向けに、漢字や計算をテーマとした教育ゲームを個人開発。設計思想と実際に遊べる作品を紹介しています。",
     url: "/",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "gamanavi / portfolio",
+        alt: "gamanavi",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "gamanavi / portfolio",
-    description: "教育現場で活用できる学習ゲーム／教材のポートフォリオ",
+    title: "学習に困り感のある子どものための教育ゲーム開発ポートフォリオ｜gamanavi",
+    description: "学習に困り感のある子ども向けに、漢字や計算をテーマとした教育ゲームを個人開発。設計思想と実際に遊べる作品を紹介しています。",
     images: ["/og.png"],
   },
 };
