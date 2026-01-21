@@ -10,7 +10,7 @@
       "status": "live",
       "thumb": "/works/placeholder-1.webp",
       "links": { "play": "https://yomitabi.gamanavi.com/", "github": "", "note": "" },
-      "subjectTagstags": ["国語", "社会", "漢字"],
+      "subjectTags": ["国語", "社会", "漢字"],
       "featureTags": ["モンスター", "日本", "世界"]
     },
     {
