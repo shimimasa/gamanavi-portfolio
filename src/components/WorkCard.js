@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function LinkButton({ href, children, variant = "secondary" }) {
   if (!href || href.trim().length === 0) return null;
@@ -27,6 +28,7 @@ function LinkButton({ href, children, variant = "secondary" }) {
 }
 
 export default function WorkCard({ work }) {
+  const router = useRouter();
 
   const hasThumb = typeof work.thumb === "string" && work.thumb.trim().length > 0;
   const subtitle = typeof work.subtitle === "string" ? work.subtitle.trim() : "";
@@ -44,7 +46,8 @@ export default function WorkCard({ work }) {
 
   const playUrl = work.links?.play?.trim?.() ? work.links.play.trim() : "";
   const isWip = work.status === "wip" || playUrl.length === 0;
-  const isClickable = !isWip && playUrl.length > 0;
+  const hasDetail = typeof work.slug === "string" && work.slug.trim().length > 0;
+  const isClickable = hasDetail || (!isWip && playUrl.length > 0);
 
   // バッジ（データで指定があれば優先。なければ状態で自動付与）
   const badgeText =
@@ -56,7 +59,11 @@ export default function WorkCard({ work }) {
 
   const handleCardClick = () => {
     if (!isClickable) return;
-    window.open(playUrl, "_blank", "noreferrer");
+    if (hasDetail) {
+            router.push(`/works/${work.slug}`);
+            return;
+          }
+          window.open(playUrl, "_blank", "noreferrer");
   };
 
   return (
