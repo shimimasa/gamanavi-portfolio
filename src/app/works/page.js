@@ -6,6 +6,7 @@ import FilterTabs from "@/components/FilterTabs";
 import WorkGrid from "@/components/WorkGrid";
 
 export default function WorksPage() {
+  // 一覧ページ（/works）では動的paramsは扱わない
   const allWorks = getWorks();
   const categories = getCategories();
   const [active, setActive] = useState("all");

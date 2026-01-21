@@ -22,28 +22,12 @@ function chip(text) {
 }
 
 export default function WorkDetailPage({ params }) {
-  const slug = params?.slug;
-  const slugs = works.map((w) => w.slug);
-  const work = works.find((w) => w.slug === slug);
+  const workSlug = params?.slug;
+  const work = works.find((w) => w.slug === workSlug);
+  if (!work) return notFound();
 
-  // 診断：一致しない場合でも notFound にせず、原因を画面に出す
-  if (!work) {
-    return (
-      <div style={{ padding: 24, fontFamily: "system-ui, sans-serif" }}>
-        <h1 style={{ fontSize: 20, fontWeight: 700 }}>DEBUG: work not found</h1>
-        <p>params.slug = <code>{String(slug)}</code></p>
-        <p>known slugs:</p>
-        <pre style={{ background: "#f5f5f5", padding: 12, borderRadius: 8, overflowX: "auto" }}>
-{JSON.stringify(slugs, null, 2)}
-        </pre>
-        <p style={{ marginTop: 12 }}>
-          ここが表示されるなら、ルートは生きていて、データ一致の問題です。
-        </p>
-      </div>
-    );
-  }
-
-  const isWip = work.status === "wip" || !work.links?.play;
+  const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
+  const isWip = work.status === "wip" || playUrl.length === 0;
   const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : [];
   const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
 
