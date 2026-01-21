@@ -37,3 +37,17 @@ html, body { height: 100%; }
   li{
     list-style:none;
   }
+
+/* Tailwindのline-clampプラグイン未導入でも、最小限の行数制限を使えるようにする */
+@layer utilities {
+  .line-clamp-1,
+  .line-clamp-2,
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  .line-clamp-1 { -webkit-line-clamp: 1; }
+  .line-clamp-2 { -webkit-line-clamp: 2; }
+  .line-clamp-3 { -webkit-line-clamp: 3; }
+}
