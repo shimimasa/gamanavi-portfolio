@@ -3,6 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import works from "@/content/works.json";
 
+export function generateStaticParams() {
+  return works
+    .filter((w) => typeof w.slug === "string" && w.slug.trim().length > 0)
+    .map((w) => ({ slug: w.slug }));
+}
+
+// 静的出力前提ならこれも有効（任意）
+export const dynamicParams = false;
+
+
 function chip(text) {
   return (
     <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-800">
