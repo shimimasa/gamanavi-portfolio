@@ -9,6 +9,7 @@
       "oneLiner": "漢字の読みを答えて、モンスターを仲間にしながら旅しよう！",
       "status": "live",
       "thumb": "/works/placeholder-1.webp",
+      "previewVideo": "/videos/kanji-yomitabi-preview.mp4",
       "links": { "play": "https://yomitabi.gamanavi.com/", "github": "", "note": "" },
       "subjectTags": ["国語", "社会", "漢字"],
       "featureTags": ["モンスター", "日本", "世界"],

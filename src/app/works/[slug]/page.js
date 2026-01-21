@@ -41,6 +41,10 @@ export default async function WorkDetailPage({ params }) {
 
   const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
   const isWip = work.status === "wip" || playUrl.length === 0;
+  const previewVideo =
+    typeof work.previewVideo === "string" && work.previewVideo.trim().length > 0
+      ? work.previewVideo.trim()
+      : "";
   const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : [];
   const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
 
@@ -144,7 +148,20 @@ export default async function WorkDetailPage({ params }) {
 
           <div className="lg:col-span-5">
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-neutral-100">
-              {work.thumb ? (
+            {previewVideo ? (
+                <video
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  // 読み込み前の見栄えを維持（thumbがあればポスターに使う）
+                  poster={typeof work.thumb === "string" ? work.thumb : undefined}
+                >
+                  <source src={previewVideo} type="video/mp4" />
+                </video>
+              ) : work.thumb ? (
                 <Image
                   src={work.thumb}
                   alt={work.title}
