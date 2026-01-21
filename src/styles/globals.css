@@ -37,3 +37,39 @@ html, body { height: 100%; }
   li{
     list-style:none;
   }
+
+  /* ------------------------------------------------------------
++   P4: motion safety (prefers-reduced-motion)
++   - 勝手に動かない（hover/activeのUI反応のみ）
++   - reduced の場合はアニメ/トランジションを無効化
++   ------------------------------------------------------------ */
+@layer base {
+    @media (prefers-reduced-motion: reduce) {
+      html:focus-within {
+        scroll-behavior: auto;
+      }
+  
+      /* 予期せぬアニメ/トランジションを抑止（hover/activeも含めて最小化） */
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  }
+
+/* Tailwindのline-clampプラグイン未導入でも、最小限の行数制限を使えるようにする */
+@layer utilities {
+  .line-clamp-1,
+  .line-clamp-2,
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+  .line-clamp-1 { -webkit-line-clamp: 1; }
+  .line-clamp-2 { -webkit-line-clamp: 2; }
+  .line-clamp-3 { -webkit-line-clamp: 3; }
+}

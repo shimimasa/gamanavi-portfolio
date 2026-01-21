@@ -7,12 +7,28 @@ function LinkButton({ href, children, variant = "secondary" }) {
   if (!href || href.trim().length === 0) return null;
 
   const base =
-    "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2";
+    [
+      "inline-flex items-center justify-center rounded-lg text-sm font-semibold",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2",
+      "transition-[transform,box-shadow,background-color] duration-200 ease-out motion-reduce:transition-none",
+      "active:scale-[0.98] motion-reduce:active:scale-100",
+    ].join(" ");
 
   const styles =
     variant === "primary"
-      ? "bg-neutral-900 text-white shadow-sm hover:bg-neutral-800 active:translate-y-px"
-      : "border border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50";
+      ? [
+          // CTA: 迷いなく押せるサイズ感（色は増やさない）
+          "min-h-[44px] px-5 py-3 text-base",
+          "bg-neutral-900 text-white shadow-md",
+          "hover:bg-neutral-800 hover:-translate-y-0.5 hover:shadow-lg hover:scale-[1.02]",
+          "motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100",
+        ].join(" ")
+      : [
+          "min-h-[40px] px-4 py-2",
+          "border border-neutral-300 bg-white text-neutral-900",
+          "hover:bg-neutral-50 hover:-translate-y-px",
+          "motion-reduce:hover:translate-y-0",
+        ].join(" ");
 
   return (
     <a
@@ -69,8 +85,9 @@ export default function WorkCard({ work }) {
   return (
     <article
       className={[
-        "overflow-hidden rounded-2xl border border-neutral-200/70 bg-white shadow-sm transition",
-        isClickable ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-md" : "",
+        "group overflow-hidden rounded-2xl border border-neutral-200/70 bg-white shadow-sm",
+        "transition-[transform,box-shadow] duration-200 ease-out motion-reduce:transition-none",
+        isClickable ? "cursor-pointer hover:-translate-y-1 hover:shadow-lg motion-reduce:hover:translate-y-0" : "",
       ].join(" ")}
       onClick={handleCardClick}
       role={isClickable ? "link" : undefined}
@@ -82,14 +99,14 @@ export default function WorkCard({ work }) {
             src={work.thumb}
             alt={work.title}
             fill
-            className="object-cover"
+            className="object-cover transition-transform duration-200 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
             sizes="(max-width: 768px) 100vw, 33vw"
             priority={false}
           />
         ) : (
           <div className="absolute inset-0 flex flex-col justify-end p-4">
             <div className="text-xs font-medium text-neutral-500">{work.audience ?? ""}</div>
-            <div className="mt-1 line-clamp-2 text-base font-semibold text-neutral-900">
+            <div className="mt-1 line-clamp-2 text-lg font-semibold tracking-tight text-neutral-900">
               {work.title}
             </div>
             <div className="mt-2 text-xs text-neutral-500">
@@ -109,14 +126,18 @@ export default function WorkCard({ work }) {
             </span>
           )}
         </div>
-        <h3 className="mt-1 line-clamp-2 text-base font-semibold">{work.title}</h3>
+        <h3 className="mt-2 line-clamp-2 text-lg font-semibold tracking-tight text-neutral-900">
+          {work.title}
+        </h3>
         {subtitle.length > 0 && (
           <div className="mt-1 line-clamp-1 text-xs text-neutral-600">
             {subtitle}
           </div>
         )}
         {work.oneLiner ? (
-          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-neutral-700">{work.oneLiner}</p>
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-neutral-700">
+            {work.oneLiner}
+          </p>
         ) : (
           <p className="mt-2 text-sm leading-relaxed text-neutral-500">
             近日、説明文を追加予定です。
@@ -125,17 +146,17 @@ export default function WorkCard({ work }) {
 {/* タグ（上：教科 / 下：体験） */}
         <div className="mt-3 space-y-2">
           {shownSubjectTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {shownSubjectTags.map((t) => (
                 <span
                   key={`subject-${t}`}
-                  className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800"
+                  className="rounded-full bg-neutral-200/70 px-2.5 py-1 text-xs font-medium text-neutral-800"
                  >
                   {t}
                 </span>
               ))}
               {remainingSubject > 0 && (
-                <span className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800">
+                <span className="rounded-full bg-neutral-200/70 px-2.5 py-1 text-xs font-medium text-neutral-800">
                   +{remainingSubject}
                 </span>
               )}
@@ -143,17 +164,17 @@ export default function WorkCard({ work }) {
           )}
 
           {shownFeatureTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
               {shownFeatureTags.map((t) => (
                 <span
                   key={`feature-${t}`}
-                  className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800"
+                  className="rounded-full bg-neutral-200/70 px-2.5 py-1 text-xs font-medium text-neutral-800"
                 >
                   {t}
                 </span>
               ))}
               {remainingFeature > 0 && (
-                <span className="rounded-full bg-neutral-200/70 px-3 py-1 text-xs font-medium text-neutral-800">
+                <span className="rounded-full bg-neutral-200/70 px-2.5 py-1 text-xs font-medium text-neutral-800">
                   +{remainingFeature}
                 </span>
               )}
@@ -169,10 +190,11 @@ export default function WorkCard({ work }) {
                🛠 ただいま つくっているよ
             </span>
           ) : (
-            <div className="flex-1 min-w-[180px]">              <LinkButton href={playUrl} variant="primary">
-                          ▶ ゲームスタート！
-                        </LinkButton>
-          </div>
+            <div className="min-w-[200px] flex-1">
+              <LinkButton href={playUrl} variant="primary">
+                ▶ ゲームスタート！
+              </LinkButton>
+            </div>
           )}
           <div className="flex flex-wrap gap-2">
             <LinkButton href={work.links?.github} variant="secondary">
