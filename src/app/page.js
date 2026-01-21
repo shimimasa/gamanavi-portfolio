@@ -21,10 +21,12 @@ export default function HomePage() {
             あそびながら、ぐんぐん学べる！
             </h1>
 
-            <p className="mt-2 text-base leading-relaxed text-neutral-700">
-              <li>小学生〜中学生向けの学習ゲーム。</li>
-              <li>授業・支援教室・おうち学習で、たのしく使えます。</li>
-            </p>
+            <ul className="mt-2 space-y-1 text-base leading-relaxed text-neutral-700">
+            <li className="list-none">小学生〜中学生向け。</li>
+            <li className="list-none">授業・支援教室・家庭学習で使える学習ゲームを公開しています。
+            </li>
+            </ul>
+            
 
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-700">

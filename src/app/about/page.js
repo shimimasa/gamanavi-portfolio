@@ -9,7 +9,7 @@ export default function AboutPage() {
         <h2 className="text-lg font-semibold">経歴・取り組み</h2>
         <p className="mt-3 text-neutral-700">
         <li>社会福祉士・中学高校社会科教員免許所持。小学校～高校の発達障害児への学習指導歴4年。</li>
-        <li>AIを活用して、教育現場で使える学習ゲーム／教材を、継続的に開発しています。</li>
+        <li>AIを活用して、教育現場で使える学習ゲーム／教材を開発しています。</li>
         <li>発達特性に配慮し、「短時間で達成感」「操作がシンプル」「視覚的に理解できる」設計を重視します。</li>
         </p>
         <div className="mt-auto pt-4 flex flex-wrap gap-2">
