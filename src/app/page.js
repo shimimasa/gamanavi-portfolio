@@ -1,12 +1,12 @@
 import Link from "next/link";
 import links from "@/content/links.json";
 import profile from "@/content/profile.json";
-import { getWorks } from "@/lib/works";
+import { FEATURED_LIMIT, getFeaturedWorks, getWorks } from "@/lib/works";
 import WorkGrid from "@/components/WorkGrid";
 
 export default function HomePage() {
   // Homeでは「代表作」までファーストビューに収めることを優先し、表示数を絞る
-  const works = getWorks().slice(0, 2);
+  const works = getFeaturedWorks(getWorks(), FEATURED_LIMIT);
 
   return (
     // 上：ヒーロー / 下：制作物（横いっぱい）の上下分離にする
