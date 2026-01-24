@@ -40,8 +40,36 @@
       "howToPlay": ["「▶ ゲームスタート！」を押す", "表示された文字を、ガイドに沿ってなぞる", "正しく書けたら、つぎの文字へ進もう！"]
     },
     {
-      "id": "mystery-coming-soon",
-      "slug": "keisan-piramid",
+      "id": "placeholder-3",
+      "slug": "sudoku-puzzle",
+      "title": "すうどくすてっぷ",
+      "subtitle": "〜こども向け 数のロジックパズル〜",
+      "category": "game",
+      "audience": "小学生〜中学生向け",
+      "oneLiner": "マスに数字を入れて、たて・よこ・ブロックをそろえよう！",
+      "status": "live",
+      "thumb": "/works/placeholder-3.webp",
+      "previewVideo": "/videos/sudoku-puzzle-preview.mp4",
+      "links": {
+        "play": "https://sudoku.gamanavi.com/",
+        "github": "https://github.com/shimimasa/sudoku-puzzle",
+        "note": ""
+      },
+      "subjectTags": ["算数", "思考力"],
+      "featureTags": ["数独", "ロジック", "レベル選択"],
+      "canDo": ["レベルをえらぶ", "数字を入力する", "クリアタイムを更新する"],
+      "learning": {
+        "body": "同じ数字を重ねないルールから、条件整理・仮説検証・見直しの流れを練習できます。短い試行を繰り返せるので、集中が続きやすい設計です。"
+      },
+      "howToPlay": [
+        "レベルをえらぶ",
+        "マスを選んで数字を入力する",
+        "全てのマスが正しく埋まればクリア！"
+      ]
+    },
+    {
+      "id": "placeholder-4",
+      "slug": "keisan-pirmid",
       "title": "計算ピラミッド",
       "subtitle": "〜考えてのぼる算数チャレンジ〜",
       "category": "game",
