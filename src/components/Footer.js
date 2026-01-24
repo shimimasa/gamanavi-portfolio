@@ -16,7 +16,7 @@ export default function Footer() {
           </a>
         </div>
         <div className="mt-3 text-xs text-neutral-500">
-          © {new Date().getFullYear()} Masanobu Shimizu
+          © {new Date().getFullYear()}  Shimizu
         </div>
       </div>
     </footer>
