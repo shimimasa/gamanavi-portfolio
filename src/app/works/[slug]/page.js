@@ -45,6 +45,10 @@ export default async function WorkDetailPage({ params }) {
     Array.isArray(work.howToPlay) && work.howToPlay.length > 0
       ? work.howToPlay
       : missingListPlaceholder;
+  const observationPoints =
+    Array.isArray(work.observationPoints) && work.observationPoints.length > 0
+      ? work.observationPoints
+      : [];
 
   return (
     <div className="space-y-6">
@@ -52,6 +56,9 @@ export default async function WorkDetailPage({ params }) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link href="/works" className="text-sm text-neutral-700 hover:underline">
           ← 制作物一覧へ
+        </Link>
+        <Link href="/research" className="text-sm text-neutral-600 hover:underline">
+          研究メモを見る →
         </Link>
         <div className="text-sm text-neutral-500">Home / 制作物 / {work.title}</div>
       </div>
@@ -163,6 +170,50 @@ export default async function WorkDetailPage({ params }) {
         </div>
       </section>
 
+      {observationPoints.length > 0 ? (
+        <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
+          <h2 className="text-xl font-semibold">
+            <span className="inline-flex items-center gap-2">
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="h-5 w-5 text-neutral-900"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M4 4h16v16H4z" />
+                <path d="M7 9h10M7 13h6" />
+              </svg>
+              このゲームで見ていること
+            </span>
+          </h2>
+
+          <ul className="mt-4 space-y-2 text-neutral-800">
+            {observationPoints.map((item) => (
+              <li key={item} className="flex items-start gap-3 text-base sm:text-lg">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="mt-1 h-5 w-5 flex-none text-neutral-900"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-4 text-sm text-neutral-600">
+            <Link href="/research" className="hover:underline">
+              研究メモもあわせて見る →
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
       {/* できること */}
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
         <h2 className="text-xl font-semibold">
@@ -238,6 +289,9 @@ export default async function WorkDetailPage({ params }) {
       <div className="flex flex-wrap items-center justify-between gap-3">
        <Link href="/works" className="text-sm text-neutral-700 hover:underline">
           ← 制作物一覧へ
+        </Link>
+        <Link href="/research" className="text-sm text-neutral-700 hover:underline">
+          研究メモ →
         </Link>
         <Link href="/contact" className="text-sm text-neutral-700 hover:underline">
           お問い合わせ →
