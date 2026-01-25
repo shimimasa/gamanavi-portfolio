@@ -1,6 +1,7 @@
 const memoryStore = globalThis.__ratingsMemoryStore ?? new Map();
 const memoryRateLimits = globalThis.__ratingsRateLimit ?? new Map();
 const memoryDailyRatings = globalThis.__ratingsDailyDevice ?? new Map();
+const memorySessionMemos = globalThis.__ratingsSessionMemo ?? new Map();
 
 if (!globalThis.__ratingsMemoryStore) {
   globalThis.__ratingsMemoryStore = memoryStore;
@@ -12,6 +13,10 @@ if (!globalThis.__ratingsRateLimit) {
 
 if (!globalThis.__ratingsDailyDevice) {
   globalThis.__ratingsDailyDevice = memoryDailyRatings;
+}
+
+if (!globalThis.__ratingsSessionMemo) {
+  globalThis.__ratingsSessionMemo = memorySessionMemos;
 }
 
 const choices = ["fun", "ok", "hard"];
@@ -53,6 +58,10 @@ function getDailyDeviceKey(sessionId, slug, dateKey, deviceId) {
 
 function getLegacyDailyDeviceKey(slug, dateKey, deviceId) {
   return `rated:${slug}:${dateKey}:${deviceId}`;
+}
+
+function getSessionMemoKey(sessionId) {
+  return `session:memo:${sessionId}`;
 }
 
 function getMemoryValue(key) {
@@ -205,4 +214,37 @@ export async function registerDailyDeviceRating(slug, deviceId, dateKey, session
 
   memoryDailyRatings.set(key, true);
   return { alreadyRated: false, source: "memory" };
+}
+
+export async function getSessionMemo(sessionId) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const key = getSessionMemoKey(resolvedSessionId);
+
+  if (isKvConfigured) {
+    const memo = await kvRequest(`/get/${encodeURIComponent(key)}`);
+    if (memo !== null) {
+      return typeof memo === "string" ? memo : String(memo ?? "");
+    }
+  }
+
+  const value = memorySessionMemos.get(key);
+  return typeof value === "string" ? value : "";
+}
+
+export async function setSessionMemo(sessionId, memo) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const key = getSessionMemoKey(resolvedSessionId);
+  const memoValue = typeof memo === "string" ? memo : String(memo ?? "");
+
+  if (isKvConfigured) {
+    const response = await kvRequest(
+      `/set/${encodeURIComponent(key)}/${encodeURIComponent(memoValue)}`
+    );
+    if (response !== null) {
+      return { ok: response === "OK", source: "kv" };
+    }
+  }
+
+  memorySessionMemos.set(key, memoValue);
+  return { ok: true, source: "memory" };
 }

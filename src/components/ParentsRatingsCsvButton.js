@@ -24,7 +24,12 @@ function sanitizeFilename(value) {
   return value.replace(/[^a-zA-Z0-9._-]/g, "_");
 }
 
-export default function ParentsRatingsCsvButton({ summaries, kvConfigured, sessionId }) {
+export default function ParentsRatingsCsvButton({
+  summaries,
+  kvConfigured,
+  sessionId,
+  sessionMemo = "",
+}) {
   const resolvedSessionId = normalizeSessionId(sessionId);
   const csvRows = useMemo(
     () =>
@@ -32,6 +37,7 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured, sessi
         slug: summary.slug,
         title: summary.title,
         session_id: resolvedSessionId,
+        session_memo: sessionMemo,
         total: summary.total,
         fun: summary.fun,
         ok: summary.ok,
@@ -40,15 +46,31 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured, sessi
         ok_percent: formatPercent(summary.ok, summary.total),
         hard_percent: formatPercent(summary.hard, summary.total),
       })),
-    [summaries, resolvedSessionId]
+    [summaries, resolvedSessionId, sessionMemo]
   );
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!kvConfigured) return;
 
     const exportedAt = new Date().toISOString();
+    let memoValue = sessionMemo;
+
+    try {
+      const response = await fetch(
+        `/api/session-memo?sessionId=${encodeURIComponent(resolvedSessionId)}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        memoValue = typeof data?.memo === "string" ? data.memo : memoValue;
+      }
+    } catch (error) {
+      console.error("Failed to fetch session memo for CSV", error);
+    }
+
+    const rows = csvRows.map((row) => ({ ...row, session_memo: memoValue }));
     const headers = [
       "session_id",
+      "session_memo",
       "slug",
       "title",
       "total",
@@ -63,9 +85,10 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured, sessi
 
     const lines = [
       headers.join(","),
-      ...csvRows.map((row) =>
+      ...rows.map((row) =>
         [
           row.session_id,
+          row.session_memo,
           row.slug,
           row.title,
           row.total,
