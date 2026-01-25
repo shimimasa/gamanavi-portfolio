@@ -48,6 +48,13 @@ export default function Header() {
               >
                 ゲーム一覧
               </Link>
+              <Link
+                href="/kids/parents-gate"
+                className={`${base} ${isKidsActive("/kids/parents-gate") ? active : ""}`}
+                aria-current={isKidsActive("/kids/parents-gate") ? "page" : undefined}
+              >
+                おうちの方へ
+              </Link>
             </>
           ) : (
             <>
