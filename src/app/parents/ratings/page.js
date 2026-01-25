@@ -1,6 +1,7 @@
 import Link from "next/link";
 import works from "@/content/works.json";
 import { getRatingSummary, getSessionMemo, kvStatus } from "@/lib/ratingsStore";
+import { formatSessionLabel } from "@/lib/sessionLabel";
 import ParentsRatingsCsvButton from "@/components/ParentsRatingsCsvButton";
 import ParentsSessionBar from "@/components/ParentsSessionBar";
 
@@ -25,8 +26,10 @@ export default async function ParentsRatingsPage({ searchParams }) {
   const sorted = [...summaries].sort((a, b) => b.summary.total - a.summary.total);
   const ratedSummaries = sorted.filter(({ summary }) => summary.total > 0);
   const unratedSummaries = sorted.filter(({ summary }) => summary.total === 0);
+  const totalRatings = sorted.reduce((total, { summary }) => total + summary.total, 0);
   const status = kvStatus();
   const sessionMemo = await getSessionMemo(sessionId);
+  const sessionLabel = formatSessionLabel(sessionId);
   const csvSummaries = sorted.map(({ work, summary }) => ({
     slug: work.slug,
     title: work.title,
@@ -62,8 +65,32 @@ export default async function ParentsRatingsPage({ searchParams }) {
           <div>
             <h1 className="text-2xl font-semibold sm:text-3xl">こども評価の集計</h1>
             <p className="mt-2 text-sm text-neutral-600 sm:text-base">
-              作品ごとの「たのしい / ふつう / むずかしい」の感想をまとめています。
+              作品ごとの「たのしい／ふつう／むずかしい」を、授業セッション（1回分）ごとに集計しています。
             </p>
+            <div className="mt-3 rounded-2xl border border-neutral-200/70 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+              <p className="text-sm font-semibold text-neutral-800">
+                この集計は「{sessionLabel.label}」の記録です{" "}
+                <span className="text-xs text-neutral-500">{sessionLabel.sub}</span>
+              </p>
+              <dl className="mt-2 grid gap-2 text-xs text-neutral-600 sm:grid-cols-2">
+                <div className="flex items-center justify-between gap-2">
+                  <dt>授業セッション</dt>
+                  <dd className="font-semibold text-neutral-700">{sessionLabel.label}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <dt>内部ID</dt>
+                  <dd className="font-semibold text-neutral-700">{sessionLabel.id}</dd>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <dt>評価件数</dt>
+                  <dd className="font-semibold text-neutral-700">{totalRatings}件</dd>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <dt>未評価作品数</dt>
+                  <dd className="font-semibold text-neutral-700">{unratedSummaries.length}件</dd>
+                </div>
+              </dl>
+            </div>
           </div>
           <div className="flex flex-col items-end gap-3 text-right">
             <ParentsRatingsCsvButton
@@ -87,15 +114,18 @@ export default async function ParentsRatingsPage({ searchParams }) {
         <form className="mt-4 flex flex-wrap items-end gap-2 text-sm" method="get">
           <div className="flex flex-col gap-1">
             <label htmlFor="session-id" className="text-xs font-semibold text-neutral-500">
-              セッションID
+              授業セッション（内部ID）
             </label>
             <input
               id="session-id"
               name="s"
               defaultValue={sessionId}
-              placeholder="例: 2026-01-25-A"
+              placeholder="例: 2026-01-25_算数_2時間目"
               className="w-56 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
             />
+            <p className="text-[11px] text-neutral-500">
+              セッションは授業・支援の1回分をまとめる単位です。
+            </p>
           </div>
           <button
             type="submit"
@@ -103,9 +133,11 @@ export default async function ParentsRatingsPage({ searchParams }) {
           >
             セッションを適用
           </button>
-          <p className="text-xs text-neutral-500">
-            現在のセッション: <span className="font-semibold text-neutral-700">{sessionId}</span>
-          </p>
+          <div className="text-xs text-neutral-500">
+            現在の授業セッション:{" "}
+            <span className="font-semibold text-neutral-700">{sessionLabel.label}</span>{" "}
+            <span className="text-[11px] text-neutral-400">{sessionLabel.sub}</span>
+          </div>
         </form>
       </section>
 
@@ -162,7 +194,10 @@ export default async function ParentsRatingsPage({ searchParams }) {
         <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-8">
           <details className="group">
             <summary className="flex cursor-pointer items-center justify-between gap-3 text-sm font-semibold text-neutral-700">
-              <span>まだ評価がない作品（{unratedSummaries.length}件）</span>
+              <span className="flex flex-wrap items-center gap-2">
+                <span>まだ評価がない作品（{unratedSummaries.length}件）</span>
+                <span className="text-xs font-normal text-neutral-500">(このセッション内)</span>
+              </span>
               <span className="text-xs text-neutral-500 group-open:rotate-180">▼</span>
             </summary>
             <ul className="mt-4 grid gap-3 text-sm text-neutral-600 sm:grid-cols-2">

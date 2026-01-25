@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import works from "@/content/works.json";
 import { getRatingSummary, getTeacherComment } from "@/lib/ratingsStore";
+import { formatSessionLabel } from "@/lib/sessionLabel";
 import ParentsTeacherComment from "@/components/ParentsTeacherComment";
 
 export function generateStaticParams() {
@@ -88,6 +89,7 @@ export default async function ParentsWorkDetailPage({ params, searchParams }) {
   const ratingSummary = await getRatingSummary(work.slug, sessionId);
   const teacherComment = await getTeacherComment(sessionId, work.slug);
   const ratingInsight = getRatingInsight(ratingSummary);
+  const sessionLabel = formatSessionLabel(sessionId);
 
   const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
   const isWip = work.status === "wip" || playUrl.length === 0;
@@ -142,7 +144,9 @@ export default async function ParentsWorkDetailPage({ params, searchParams }) {
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-xs font-semibold text-neutral-500">こども評価ミニ集計</p>
                 <p className="text-xs text-neutral-500">
-                  セッション: <span className="font-semibold text-neutral-700">{sessionId}</span>
+                  授業セッション:{" "}
+                  <span className="font-semibold text-neutral-700">{sessionLabel.label}</span>{" "}
+                  <span className="text-[11px] text-neutral-400">{sessionLabel.sub}</span>
                 </p>
               </div>
               {ratingSummary.total === 0 ? (

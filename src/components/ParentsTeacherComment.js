@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatSessionLabel } from "@/lib/sessionLabel";
 
 export default function ParentsTeacherComment({ sessionId, slug, initialComment = "" }) {
   const [commentValue, setCommentValue] = useState(initialComment);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const sessionLabel = formatSessionLabel(sessionId);
 
   useEffect(() => {
     let isActive = true;
@@ -73,7 +75,8 @@ export default function ParentsTeacherComment({ sessionId, slug, initialComment 
           <p className="mt-1 text-sm text-neutral-600">保護者への説明に添える補足メモとして保存できます。</p>
         </div>
         <div className="text-xs text-neutral-500">
-          セッション: <span className="font-semibold text-neutral-700">{sessionId}</span>
+          授業セッション: <span className="font-semibold text-neutral-700">{sessionLabel.label}</span>{" "}
+          <span className="text-[11px] text-neutral-400">{sessionLabel.sub}</span>
         </div>
       </div>
       <textarea
