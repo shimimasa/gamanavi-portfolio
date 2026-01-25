@@ -1,6 +1,6 @@
 import Link from "next/link";
 import works from "@/content/works.json";
-import { getRatingSummary, kvStatus } from "@/lib/ratingsStore";
+import { getRatingSummary, getSessionMemo, kvStatus } from "@/lib/ratingsStore";
 import ParentsRatingsCsvButton from "@/components/ParentsRatingsCsvButton";
 import ParentsSessionBar from "@/components/ParentsSessionBar";
 
@@ -26,6 +26,7 @@ export default async function ParentsRatingsPage({ searchParams }) {
   const ratedSummaries = sorted.filter(({ summary }) => summary.total > 0);
   const unratedSummaries = sorted.filter(({ summary }) => summary.total === 0);
   const status = kvStatus();
+  const sessionMemo = await getSessionMemo(sessionId);
   const csvSummaries = sorted.map(({ work, summary }) => ({
     slug: work.slug,
     title: work.title,
@@ -37,7 +38,7 @@ export default async function ParentsRatingsPage({ searchParams }) {
 
   return (
     <div className="space-y-6">
-      <ParentsSessionBar />
+      <ParentsSessionBar initialMemo={sessionMemo} />
       {!status.configured && (
         <section className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900 shadow-sm sm:px-6 sm:py-5">
           <p className="font-semibold">⚠️ Vercel KV が未設定です</p>
@@ -60,6 +61,7 @@ export default async function ParentsRatingsPage({ searchParams }) {
               summaries={csvSummaries}
               kvConfigured={status.configured}
               sessionId={sessionId}
+              sessionMemo={sessionMemo}
             />
             <Link
               href="/parents/works"
