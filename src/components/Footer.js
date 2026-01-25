@@ -1,6 +1,12 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import links from "@/content/links.json";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname.startsWith("/kids")) return null;
+
   return (
     <footer className="border-t border-neutral-200">
       <div className="mx-auto max-w-5xl px-4 py-10 text-sm text-neutral-600">

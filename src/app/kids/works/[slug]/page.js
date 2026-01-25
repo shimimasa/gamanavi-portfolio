@@ -168,9 +168,6 @@ export default async function KidsWorkDetailPage({ params }) {
         <Link href="/kids/works" className="hover:underline">
           ← ゲーム一覧へ
         </Link>
-        <Link href="/parents" className="hover:underline">
-          保護者・先生向けはこちら →
-        </Link>
       </div>
     </div>
   );
