@@ -2,6 +2,7 @@ const memoryStore = globalThis.__ratingsMemoryStore ?? new Map();
 const memoryRateLimits = globalThis.__ratingsRateLimit ?? new Map();
 const memoryDailyRatings = globalThis.__ratingsDailyDevice ?? new Map();
 const memorySessionMemos = globalThis.__ratingsSessionMemo ?? new Map();
+const memoryTeacherComments = globalThis.__ratingsTeacherComments ?? new Map();
 
 if (!globalThis.__ratingsMemoryStore) {
   globalThis.__ratingsMemoryStore = memoryStore;
@@ -17,6 +18,10 @@ if (!globalThis.__ratingsDailyDevice) {
 
 if (!globalThis.__ratingsSessionMemo) {
   globalThis.__ratingsSessionMemo = memorySessionMemos;
+}
+
+if (!globalThis.__ratingsTeacherComments) {
+  globalThis.__ratingsTeacherComments = memoryTeacherComments;
 }
 
 const choices = ["fun", "ok", "hard"];
@@ -62,6 +67,10 @@ function getLegacyDailyDeviceKey(slug, dateKey, deviceId) {
 
 function getSessionMemoKey(sessionId) {
   return `session:memo:${sessionId}`;
+}
+
+function getTeacherCommentKey(sessionId, slug) {
+  return `session:teacher-comment:${sessionId}:${slug}`;
 }
 
 function getMemoryValue(key) {
@@ -246,5 +255,42 @@ export async function setSessionMemo(sessionId, memo) {
   }
 
   memorySessionMemos.set(key, memoValue);
+  return { ok: true, source: "memory" };
+}
+
+export async function getTeacherComment(sessionId, slug) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const resolvedSlug = typeof slug === "string" ? slug.trim() : "";
+  if (!resolvedSlug) return "";
+  const key = getTeacherCommentKey(resolvedSessionId, resolvedSlug);
+
+  if (isKvConfigured) {
+    const memo = await kvRequest(`/get/${encodeURIComponent(key)}`);
+    if (memo !== null) {
+      return typeof memo === "string" ? memo : String(memo ?? "");
+    }
+  }
+
+  const value = memoryTeacherComments.get(key);
+  return typeof value === "string" ? value : "";
+}
+
+export async function setTeacherComment(sessionId, slug, comment) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const resolvedSlug = typeof slug === "string" ? slug.trim() : "";
+  if (!resolvedSlug) return { ok: false, source: "memory" };
+  const key = getTeacherCommentKey(resolvedSessionId, resolvedSlug);
+  const commentValue = typeof comment === "string" ? comment : String(comment ?? "");
+
+  if (isKvConfigured) {
+    const response = await kvRequest(
+      `/set/${encodeURIComponent(key)}/${encodeURIComponent(commentValue)}`
+    );
+    if (response !== null) {
+      return { ok: response === "OK", source: "kv" };
+    }
+  }
+
+  memoryTeacherComments.set(key, commentValue);
   return { ok: true, source: "memory" };
 }
