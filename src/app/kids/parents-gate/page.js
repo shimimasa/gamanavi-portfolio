@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const HOLD_DURATION_MS = 3000;
 const COOKIE_NAME = "gamanavi_audience";
@@ -13,6 +13,7 @@ const getRemainingSeconds = (remainingMs) =>
 
 export default function KidsParentsGatePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [progress, setProgress] = useState(0);
   const [remainingSeconds, setRemainingSeconds] = useState(
     getRemainingSeconds(HOLD_DURATION_MS),
@@ -20,6 +21,13 @@ export default function KidsParentsGatePage() {
   const timerRef = useRef(null);
   const startTimeRef = useRef(null);
   const completedRef = useRef(false);
+  const nextDestination = useMemo(() => {
+    const nextParam = searchParams.get("next");
+    if (!nextParam) {
+      return "/parents";
+    }
+    return nextParam.startsWith("/parents") ? nextParam : "/parents";
+  }, [searchParams]);
 
   const resetState = () => {
     setProgress(0);
@@ -40,7 +48,7 @@ export default function KidsParentsGatePage() {
     if (window.location.protocol === "https:") {
       document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure`;
     }
-    router.push("/parents");
+    router.push(nextDestination);
   };
 
   const handlePointerDown = () => {
