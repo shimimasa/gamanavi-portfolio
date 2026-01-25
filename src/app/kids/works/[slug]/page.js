@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import KidsRatingForm from "@/components/KidsRatingForm";
 import works from "@/content/works.json";
 
 export function generateStaticParams() {
@@ -94,6 +95,10 @@ export default async function KidsWorkDetailPage({ params }) {
               <p className="text-xs text-neutral-500">
                 ※ ブラウザでそのまま遊べます。ダウンロードは不要です。
               </p>
+            </div>
+
+            <div className="mt-6">
+              <KidsRatingForm slug={work.slug} />
             </div>
           </div>
 
