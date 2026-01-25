@@ -21,12 +21,7 @@ function chip(text) {
 }
 
 export default async function KidsWorkDetailPage({ params, searchParams }) {
-  const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
-  const defaultHowToPlay = [
-    "「▶ ゲームスタート！」を押す",
-    "もんだいを見て、よみを入力する",
-    "正解したら、モンスターが仲間になる！",
-  ];
+  const missingPlaceholder = ["準備中だよ。あとで見にきてね。"];
 
   const resolvedParams = await params;
   const workSlug = typeof resolvedParams?.slug === "string" ? resolvedParams.slug.trim() : "";
@@ -45,9 +40,10 @@ export default async function KidsWorkDetailPage({ params, searchParams }) {
       ? work.previewVideo.trim()
       : "";
 
-  const canDo = Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : defaultCanDo;
+  const canDo =
+    Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : missingPlaceholder;
   const howToPlay =
-    Array.isArray(work.howToPlay) && work.howToPlay.length > 0 ? work.howToPlay : defaultHowToPlay;
+    Array.isArray(work.howToPlay) && work.howToPlay.length > 0 ? work.howToPlay : missingPlaceholder;
 
   return (
     <div className="space-y-6">

@@ -22,14 +22,7 @@ function chip(text) {
 }
 
 export default async function WorkDetailPage({ params }) {
-  const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
-  const defaultLearningBody =
-    "漢字の読みを短いサイクルで反復しながら、全国・世界のモチーフに触れられます。「正解→報酬（仲間が増える）」の構造で意欲が続きやすい設計です。";
-  const defaultHowToPlay = [
-    "「▶ ゲームスタート！」を押す",
-    "もんだいを見て、よみを入力する",
-    "正解したら、モンスターが仲間になる！",
-  ];
+  const missingListPlaceholder = ["準備中です。"];
 
   // Next.jsのバージョン/レンダリング状況によっては params が Promise で渡るケースがあるため await して吸収する
   const resolvedParams = await params;
@@ -45,19 +38,13 @@ export default async function WorkDetailPage({ params }) {
     typeof work.previewVideo === "string" && work.previewVideo.trim().length > 0
       ? work.previewVideo.trim()
       : "";
-  const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : [];
-  const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
 
   const canDo =
-    Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : defaultCanDo;
-  const learningBody =
-    typeof work.learning?.body === "string" && work.learning.body.trim().length > 0
-      ? work.learning.body.trim()
-      : defaultLearningBody;
+    Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : missingListPlaceholder;
   const howToPlay =
     Array.isArray(work.howToPlay) && work.howToPlay.length > 0
       ? work.howToPlay
-      : defaultHowToPlay;
+      : missingListPlaceholder;
 
   return (
     <div className="space-y-6">
@@ -211,69 +198,6 @@ export default async function WorkDetailPage({ params }) {
             </li>
           ))}
         </ul>
-      </section>
-
-      {/* 学べること */}
-      <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-10">
-        <details className="group">
-          <summary
-            className={[
-              "flex cursor-pointer items-start justify-between gap-3",
-              "select-none list-none [&::-webkit-details-marker]:hidden",
-            ].join(" ")}
-          >
-            <span className="text-xl font-semibold">
-              <span className="inline-flex items-center gap-2">
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5 text-neutral-900"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M12 2a7 7 0 00-4 12.7V20l4-2 4 2v-5.3A7 7 0 0012 2z" />
-                </svg>
-                学べること（先生・保護者の方へ）
-              </span>
-            </span>
-
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              className="mt-1 h-5 w-5 flex-none text-neutral-700 transition-transform duration-200 ease-out group-open:rotate-180 motion-reduce:transition-none"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </svg>
-          </summary>
-
-          <div className="mt-4">
-            <div className="flex flex-wrap gap-2">
-              {subjectTags.map((t) => (
-                <span key={`s-${t}`} className="rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-800">
-                  {t}
-                </span>
-              ))}
-            </div>
-            <p className="mt-4 text-neutral-700">{learningBody}</p>
-            {featureTags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {featureTags.map((t) => (
-                  <span key={`f-${t}`} className="rounded-full bg-neutral-200/70 px-3 py-1 text-sm text-neutral-900">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <p className="mt-4 text-xs text-neutral-500">
-              ※ 子ども向けの「遊び方」は下にまとめています。
-            </p>
-          </div>
-        </details>
       </section>
 
      {/* あそび方 */}

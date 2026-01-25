@@ -82,7 +82,7 @@
       "audience": "小学生〜中学生向け",
       "oneLiner": "ピラミッドをのぼりながら、計算にチャレンジ！",
       "status": "wip",
-      "thumb": "/works/sample.webp",
+      "thumb": "/works/placeholder-3.webp",
       "links": { "play": "", "github": "", "note": "" },
       "subjectTags": ["算数"],
       "featureTags": ["ピラミッド", "計算", "チャレンジ"]

@@ -66,14 +66,8 @@ function getRatingInsight(summary) {
 }
 
 export default async function ParentsWorkDetailPage({ params, searchParams }) {
-  const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
-  const defaultLearningBody =
-    "漢字の読みを短いサイクルで反復しながら、全国・世界のモチーフに触れられます。「正解→報酬（仲間が増える）」の構造で意欲が続きやすい設計です。";
-  const defaultHowToPlay = [
-    "「▶ ゲームスタート！」を押す",
-    "もんだいを見て、よみを入力する",
-    "正解したら、モンスターが仲間になる！",
-  ];
+  const missingListPlaceholder = ["準備中です（作品データを追加してください）。"];
+  const missingTextPlaceholder = "準備中です（作品データを追加してください）。";
 
   const resolvedParams = await params;
   const resolvedSearchParams = await searchParams;
@@ -100,15 +94,16 @@ export default async function ParentsWorkDetailPage({ params, searchParams }) {
   const subjectTags = Array.isArray(work.subjectTags) ? work.subjectTags : [];
   const featureTags = Array.isArray(work.featureTags) ? work.featureTags : [];
 
-  const canDo = Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : defaultCanDo;
+  const canDo =
+    Array.isArray(work.canDo) && work.canDo.length > 0 ? work.canDo : missingListPlaceholder;
   const learningBody =
     typeof work.learning?.body === "string" && work.learning.body.trim().length > 0
       ? work.learning.body.trim()
-      : defaultLearningBody;
+      : missingTextPlaceholder;
   const howToPlay =
     Array.isArray(work.howToPlay) && work.howToPlay.length > 0
       ? work.howToPlay
-      : defaultHowToPlay;
+      : missingListPlaceholder;
 
   return (
     <div className="space-y-6">
