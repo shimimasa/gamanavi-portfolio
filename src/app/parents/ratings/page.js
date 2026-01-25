@@ -39,6 +39,15 @@ export default async function ParentsRatingsPage({ searchParams }) {
   return (
     <div className="space-y-6">
       <ParentsSessionBar initialMemo={sessionMemo} />
+      <section className="rounded-3xl border border-neutral-200/60 bg-white/90 px-5 py-4 text-sm text-neutral-700 shadow-sm sm:px-6 sm:py-5">
+        <h2 className="text-base font-semibold text-neutral-900">評価の見方について</h2>
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-neutral-600">
+          <li>「たのしい / ふつう / むずかしい」は、作品を体験した子どもの感想を集計したものです。</li>
+          <li>授業や支援教室など、実際の教育現場での振り返りに活用されています。</li>
+          <li>能力判定ではなく、取り組みやすさや楽しさを確認する目的の評価です。</li>
+          <li>評価に個人情報は含めず、集計データのみを扱っています。</li>
+        </ul>
+      </section>
       {!status.configured && (
         <section className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900 shadow-sm sm:px-6 sm:py-5">
           <p className="font-semibold">⚠️ Vercel KV が未設定です</p>
@@ -63,6 +72,10 @@ export default async function ParentsRatingsPage({ searchParams }) {
               sessionId={sessionId}
               sessionMemo={sessionMemo}
             />
+            <p className="max-w-xs text-xs text-neutral-500">
+              CSVは授業・支援教室での記録共有に使えます。session_memo はセッション全体のメモ、
+              教師コメントは作品ごとの気づきを残す欄（詳細ページで記録）です。
+            </p>
             <Link
               href="/parents/works"
               className="text-sm font-semibold text-neutral-700 hover:underline"

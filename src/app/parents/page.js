@@ -34,6 +34,9 @@ export default async function ParentsHomePage() {
         <p className="mt-3 text-neutral-700">
           学習ゲームのねらいや学べることをまとめています。導入の参考や相談窓口もこちらからどうぞ。
         </p>
+        <p className="mt-3 text-sm text-neutral-600">
+          実際の授業や支援教室での活用事例をもとに、家庭でも目的が伝わるよう整理しています。
+        </p>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link
             href="/parents/works"
