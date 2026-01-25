@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 const HOLD_DURATION_MS = 3000;
 const COOKIE_NAME = "gamanavi_audience";
 const COOKIE_VALUE = "parents";
-const COOKIE_MAX_AGE = 60 * 60 * 24;
+const COOKIE_MAX_AGE = 60 * 60 * 12;
 
 const getRemainingSeconds = (remainingMs) =>
   Math.max(0, Math.ceil(remainingMs / 1000));
@@ -44,10 +44,11 @@ export default function KidsParentsGatePage() {
 
   const finishGate = () => {
     completedRef.current = true;
-    document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax`;
-    if (window.location.protocol === "https:") {
-      document.cookie = `${COOKIE_NAME}=${COOKIE_VALUE}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax; Secure`;
-    }
+    const baseCookie = `${COOKIE_NAME}=${COOKIE_VALUE}; Max-Age=${COOKIE_MAX_AGE}; Path=/; SameSite=Lax`;
+    document.cookie =
+      window.location.protocol === "https:"
+        ? `${baseCookie}; Secure`
+        : baseCookie;
     router.push(nextDestination);
   };
 
