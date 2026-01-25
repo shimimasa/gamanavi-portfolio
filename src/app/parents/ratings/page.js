@@ -110,7 +110,7 @@ export default async function ParentsRatingsPage({ searchParams }) {
                 )}
               </div>
               <Link
-                href={`/parents/works/${work.slug}`}
+                href={`/parents/works/${work.slug}?s=${encodeURIComponent(sessionId)}`}
                 className="text-xs font-semibold text-neutral-600 hover:underline"
               >
                 詳細を見る →

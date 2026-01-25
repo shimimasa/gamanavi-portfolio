@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import works from "@/content/works.json";
-import { getRatingSummary } from "@/lib/ratingsStore";
+import { getRatingSummary, getTeacherComment } from "@/lib/ratingsStore";
+import ParentsTeacherComment from "@/components/ParentsTeacherComment";
 
 export function generateStaticParams() {
   return works
@@ -25,7 +26,45 @@ function formatPercent(value, total) {
   return `${Math.round((value / total) * 100)}%`;
 }
 
-export default async function ParentsWorkDetailPage({ params }) {
+function getRatingInsight(summary) {
+  if (!summary || summary.total === 0) {
+    return {
+      label: "—",
+      message: "まだ評価はありません。",
+    };
+  }
+
+  const candidates = [
+    {
+      key: "fun",
+      label: "たのしい 😀",
+      value: summary.fun,
+      message: "前向きに取り組めた子が多い授業でした。",
+    },
+    {
+      key: "ok",
+      label: "ふつう 😐",
+      value: summary.ok,
+      message: "落ち着いて取り組めた子が多い授業でした。",
+    },
+    {
+      key: "hard",
+      label: "むずかしい 😣",
+      value: summary.hard,
+      message: "難しさを感じた子が多く、調整の余地があります。",
+    },
+  ];
+
+  const priority = { fun: 0, ok: 1, hard: 2 };
+  const sorted = [...candidates].sort((a, b) => {
+    if (b.value !== a.value) return b.value - a.value;
+    return priority[a.key] - priority[b.key];
+  });
+
+  return sorted[0];
+}
+
+export default async function ParentsWorkDetailPage({ params, searchParams }) {
   const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
   const defaultLearningBody =
     "漢字の読みを短いサイクルで反復しながら、全国・世界のモチーフに触れられます。「正解→報酬（仲間が増える）」の構造で意欲が続きやすい設計です。";
@@ -36,12 +75,19 @@ export default async function ParentsWorkDetailPage({ params }) {
   ];
 
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
   const workSlug = typeof resolvedParams?.slug === "string" ? resolvedParams.slug.trim() : "";
+  const sessionId =
+    typeof resolvedSearchParams?.s === "string" && resolvedSearchParams.s.trim().length > 0
+      ? resolvedSearchParams.s.trim()
+      : "default";
 
   const work = works.find((item) => (typeof item.slug === "string" ? item.slug.trim() : "") === workSlug);
   if (!work) return notFound();
 
-  const ratingSummary = await getRatingSummary(work.slug);
+  const ratingSummary = await getRatingSummary(work.slug, sessionId);
+  const teacherComment = await getTeacherComment(sessionId, work.slug);
+  const ratingInsight = getRatingInsight(ratingSummary);
 
   const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
   const isWip = work.status === "wip" || playUrl.length === 0;
@@ -93,7 +139,12 @@ export default async function ParentsWorkDetailPage({ params }) {
             </div>
 
             <div className="mt-5 rounded-2xl border border-neutral-200/60 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
-              <p className="text-xs font-semibold text-neutral-500">こども評価ミニ集計</p>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-xs font-semibold text-neutral-500">こども評価ミニ集計</p>
+                <p className="text-xs text-neutral-500">
+                  セッション: <span className="font-semibold text-neutral-700">{sessionId}</span>
+                </p>
+              </div>
               {ratingSummary.total === 0 ? (
                 <p className="mt-2 text-sm text-neutral-500">まだ評価はありません。</p>
               ) : (
@@ -122,6 +173,27 @@ export default async function ParentsWorkDetailPage({ params }) {
                   </div>
                 </div>
               )}
+            </div>
+
+            <div className="mt-4 rounded-2xl border border-neutral-200/60 bg-white px-4 py-3 text-sm text-neutral-700 shadow-sm">
+              <p className="text-xs font-semibold text-neutral-500">評価のまとめ</p>
+              <div className="mt-2 space-y-1 text-sm text-neutral-700">
+                <p>
+                  総評価数: <span className="font-semibold">{ratingSummary.total}</span>件
+                </p>
+                <p>
+                  最も多い評価: <span className="font-semibold">{ratingInsight.label}</span>
+                </p>
+              </div>
+              <p className="mt-2 text-xs text-neutral-500">{ratingInsight.message}</p>
+            </div>
+
+            <div className="mt-4">
+              <ParentsTeacherComment
+                sessionId={sessionId}
+                slug={work.slug}
+                initialComment={teacherComment}
+              />
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
