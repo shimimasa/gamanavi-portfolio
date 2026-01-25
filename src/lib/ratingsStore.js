@@ -1,5 +1,6 @@
 const memoryStore = globalThis.__ratingsMemoryStore ?? new Map();
 const memoryRateLimits = globalThis.__ratingsRateLimit ?? new Map();
+const memoryDailyRatings = globalThis.__ratingsDailyDevice ?? new Map();
 
 if (!globalThis.__ratingsMemoryStore) {
   globalThis.__ratingsMemoryStore = memoryStore;
@@ -7,6 +8,10 @@ if (!globalThis.__ratingsMemoryStore) {
 
 if (!globalThis.__ratingsRateLimit) {
   globalThis.__ratingsRateLimit = memoryRateLimits;
+}
+
+if (!globalThis.__ratingsDailyDevice) {
+  globalThis.__ratingsDailyDevice = memoryDailyRatings;
 }
 
 const choices = ["fun", "ok", "hard"];
@@ -24,6 +29,10 @@ function getTotalKey(slug) {
 
 function getRateLimitKey(slug, ip) {
   return `ratings:rate:${slug}:${ip}`;
+}
+
+function getDailyDeviceKey(slug, dateKey, deviceId) {
+  return `rated:${slug}:${dateKey}:${deviceId}`;
 }
 
 function getMemoryValue(key) {
@@ -118,4 +127,32 @@ export async function checkRateLimit(ip, slug, ttlSeconds = 30) {
 
   memoryRateLimits.set(key, now + ttlSeconds * 1000);
   return true;
+}
+
+export async function registerDailyDeviceRating(slug, deviceId, dateKey) {
+  const keyDate = dateKey ?? new Date().toISOString().slice(0, 10);
+  const key = getDailyDeviceKey(slug, keyDate, deviceId);
+
+  if (isKvConfigured) {
+    const path = `/set/${encodeURIComponent(key)}/1?nx=true`;
+    const response = await kvRequest(path);
+    if (response !== null) {
+      return {
+        alreadyRated: response !== "OK",
+        source: "kv",
+      };
+    }
+
+    const existing = await kvRequest(`/get/${encodeURIComponent(key)}`);
+    if (existing !== null) {
+      return { alreadyRated: true, source: "kv" };
+    }
+  }
+
+  if (memoryDailyRatings.has(key)) {
+    return { alreadyRated: true, source: "memory" };
+  }
+
+  memoryDailyRatings.set(key, true);
+  return { alreadyRated: false, source: "memory" };
 }

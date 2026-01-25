@@ -15,10 +15,22 @@ export default async function ParentsRatingsPage() {
     }))
   );
 
+  const sorted = [...summaries].sort((a, b) => b.summary.total - a.summary.total);
+  const ratedSummaries = sorted.filter(({ summary }) => summary.total > 0);
+  const unratedSummaries = sorted.filter(({ summary }) => summary.total === 0);
   const status = kvStatus();
 
   return (
     <div className="space-y-6">
+      {!status.configured && (
+        <section className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900 shadow-sm sm:px-6 sm:py-5">
+          <p className="font-semibold">⚠️ Vercel KV が未設定です</p>
+          <p className="mt-2 text-xs text-amber-800 sm:text-sm">
+            いまの評価データは一時メモリに保存されています。サーバを再起動すると消えるため、本番運用ではKVを設定してください。
+          </p>
+        </section>
+      )}
+
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -34,15 +46,10 @@ export default async function ParentsRatingsPage() {
             作品一覧へ →
           </Link>
         </div>
-        {!status.configured && (
-          <p className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 sm:text-sm">
-            ⚠️ Vercel KV が未設定のため、いまは一時メモリに保存されています。再起動すると評価はリセットされます。
-          </p>
-        )}
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        {summaries.map(({ work, summary }) => (
+        {ratedSummaries.map(({ work, summary }) => (
           <article
             key={work.slug}
             className="rounded-3xl border border-neutral-200/60 bg-white/90 p-5 shadow-sm sm:p-6"
@@ -62,39 +69,52 @@ export default async function ParentsRatingsPage() {
               </Link>
             </div>
 
-            {summary.total === 0 ? (
-              <p className="mt-4 rounded-2xl border border-dashed border-neutral-200 bg-neutral-50 px-4 py-3 text-sm text-neutral-500">
-                まだ評価はありません。
-              </p>
-            ) : (
-              <div className="mt-4 space-y-3 text-sm text-neutral-700">
-                <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
-                  <span>たのしい 😀</span>
-                  <span className="font-semibold">
-                    {summary.fun} ({formatPercent(summary.fun, summary.total)})
-                  </span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
-                  <span>ふつう 😐</span>
-                  <span className="font-semibold">
-                    {summary.ok} ({formatPercent(summary.ok, summary.total)})
-                  </span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
-                  <span>むずかしい 😣</span>
-                  <span className="font-semibold">
-                    {summary.hard} ({formatPercent(summary.hard, summary.total)})
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-xs text-neutral-500">
-                  <span>合計</span>
-                  <span>{summary.total}件</span>
-                </div>
+            <div className="mt-4 space-y-3 text-sm text-neutral-700">
+              <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
+                <span>たのしい 😀</span>
+                <span className="font-semibold">
+                  {summary.fun} ({formatPercent(summary.fun, summary.total)})
+                </span>
               </div>
-            )}
+              <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
+                <span>ふつう 😐</span>
+                <span className="font-semibold">
+                  {summary.ok} ({formatPercent(summary.ok, summary.total)})
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2">
+                <span>むずかしい 😣</span>
+                <span className="font-semibold">
+                  {summary.hard} ({formatPercent(summary.hard, summary.total)})
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs text-neutral-500">
+                <span>合計</span>
+                <span>{summary.total}件</span>
+              </div>
+            </div>
           </article>
         ))}
       </section>
+
+      {unratedSummaries.length > 0 && (
+        <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-8">
+          <details className="group">
+            <summary className="flex cursor-pointer items-center justify-between gap-3 text-sm font-semibold text-neutral-700">
+              <span>まだ評価がない作品（{unratedSummaries.length}件）</span>
+              <span className="text-xs text-neutral-500 group-open:rotate-180">▼</span>
+            </summary>
+            <ul className="mt-4 grid gap-3 text-sm text-neutral-600 sm:grid-cols-2">
+              {unratedSummaries.map(({ work }) => (
+                <li key={work.slug} className="rounded-2xl border border-dashed border-neutral-200 bg-neutral-50 px-4 py-3">
+                  <div className="font-semibold text-neutral-800">{work.title}</div>
+                  {work.subtitle && <div className="mt-1 text-xs text-neutral-500">{work.subtitle}</div>}
+                </li>
+              ))}
+            </ul>
+          </details>
+        </section>
+      )}
     </div>
   );
 }
