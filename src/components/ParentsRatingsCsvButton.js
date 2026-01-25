@@ -15,12 +15,23 @@ function escapeCsvValue(value) {
   return stringValue;
 }
 
-export default function ParentsRatingsCsvButton({ summaries, kvConfigured }) {
+function normalizeSessionId(sessionId) {
+  const trimmed = typeof sessionId === "string" ? sessionId.trim() : "";
+  return trimmed.length > 0 ? trimmed : "default";
+}
+
+function sanitizeFilename(value) {
+  return value.replace(/[^a-zA-Z0-9._-]/g, "_");
+}
+
+export default function ParentsRatingsCsvButton({ summaries, kvConfigured, sessionId }) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
   const csvRows = useMemo(
     () =>
       summaries.map((summary) => ({
         slug: summary.slug,
         title: summary.title,
+        session_id: resolvedSessionId,
         total: summary.total,
         fun: summary.fun,
         ok: summary.ok,
@@ -29,7 +40,7 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured }) {
         ok_percent: formatPercent(summary.ok, summary.total),
         hard_percent: formatPercent(summary.hard, summary.total),
       })),
-    [summaries]
+    [summaries, resolvedSessionId]
   );
 
   const handleDownload = () => {
@@ -37,6 +48,7 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured }) {
 
     const exportedAt = new Date().toISOString();
     const headers = [
+      "session_id",
       "slug",
       "title",
       "total",
@@ -53,6 +65,7 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured }) {
       headers.join(","),
       ...csvRows.map((row) =>
         [
+          row.session_id,
           row.slug,
           row.title,
           row.total,
@@ -75,7 +88,7 @@ export default function ParentsRatingsCsvButton({ summaries, kvConfigured }) {
     const link = document.createElement("a");
     const dateStamp = exportedAt.slice(0, 10);
     link.href = url;
-    link.download = `gamanavi_ratings_${dateStamp}.csv`;
+    link.download = `gamanavi_ratings_${sanitizeFilename(resolvedSessionId)}_${dateStamp}.csv`;
     document.body.appendChild(link);
     link.click();
     link.remove();

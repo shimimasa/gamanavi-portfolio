@@ -8,11 +8,15 @@ function formatPercent(value, total) {
   return `${Math.round((value / total) * 100)}%`;
 }
 
-export default async function ParentsRatingsPage() {
+export default async function ParentsRatingsPage({ searchParams }) {
+  const sessionId =
+    typeof searchParams?.s === "string" && searchParams.s.trim().length > 0
+      ? searchParams.s.trim()
+      : "default";
   const summaries = await Promise.all(
     works.map(async (work) => ({
       work,
-      summary: await getRatingSummary(work.slug),
+      summary: await getRatingSummary(work.slug, sessionId),
     }))
   );
 
@@ -49,7 +53,11 @@ export default async function ParentsRatingsPage() {
             </p>
           </div>
           <div className="flex flex-col items-end gap-3 text-right">
-            <ParentsRatingsCsvButton summaries={csvSummaries} kvConfigured={status.configured} />
+            <ParentsRatingsCsvButton
+              summaries={csvSummaries}
+              kvConfigured={status.configured}
+              sessionId={sessionId}
+            />
             <Link
               href="/parents/works"
               className="text-sm font-semibold text-neutral-700 hover:underline"
@@ -58,6 +66,29 @@ export default async function ParentsRatingsPage() {
             </Link>
           </div>
         </div>
+        <form className="mt-4 flex flex-wrap items-end gap-2 text-sm" method="get">
+          <div className="flex flex-col gap-1">
+            <label htmlFor="session-id" className="text-xs font-semibold text-neutral-500">
+              セッションID
+            </label>
+            <input
+              id="session-id"
+              name="s"
+              defaultValue={sessionId}
+              placeholder="例: 2026-01-25-A"
+              className="w-56 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
+            />
+          </div>
+          <button
+            type="submit"
+            className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800"
+          >
+            セッションを適用
+          </button>
+          <p className="text-xs text-neutral-500">
+            現在のセッション: <span className="font-semibold text-neutral-700">{sessionId}</span>
+          </p>
+        </form>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">

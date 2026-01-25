@@ -10,9 +10,9 @@ const choices = [
 
 const deviceCookieName = "gamanavi_device_id";
 
-function getTodayKey(slug) {
+function getTodayKey(slug, sessionId) {
   const date = new Date().toISOString().slice(0, 10);
-  return `kids-rating:${slug}:${date}`;
+  return `kids-rating:${sessionId}:${slug}:${date}`;
 }
 
 function getCookieValue(name) {
@@ -35,11 +35,15 @@ function ensureDeviceId() {
   return newId;
 }
 
-export default function KidsRatingForm({ slug }) {
+export default function KidsRatingForm({ slug, sessionId }) {
   const [status, setStatus] = useState("idle");
   const [hasRated, setHasRated] = useState(false);
 
-  const storageKey = useMemo(() => getTodayKey(slug), [slug]);
+  const resolvedSessionId = sessionId || "default";
+  const storageKey = useMemo(
+    () => getTodayKey(slug, resolvedSessionId),
+    [slug, resolvedSessionId]
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -58,7 +62,7 @@ export default function KidsRatingForm({ slug }) {
     const response = await fetch("/api/ratings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, choice, deviceId }),
+      body: JSON.stringify({ slug, choice, deviceId, sessionId: resolvedSessionId }),
     });
 
     if (!response.ok) {

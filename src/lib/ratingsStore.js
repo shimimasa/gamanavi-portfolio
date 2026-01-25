@@ -15,15 +15,31 @@ if (!globalThis.__ratingsDailyDevice) {
 }
 
 const choices = ["fun", "ok", "hard"];
+const defaultSessionId = "default";
 const kvUrl = process.env.KV_REST_API_URL;
 const kvToken = process.env.KV_REST_API_TOKEN;
 const isKvConfigured = Boolean(kvUrl && kvToken);
 
-function getKey(slug, choice) {
+function normalizeSessionId(sessionId) {
+  if (typeof sessionId === "string" && sessionId.trim().length > 0) {
+    return sessionId.trim();
+  }
+  return defaultSessionId;
+}
+
+function getKey(sessionId, slug, choice) {
+  return `ratings:${sessionId}:${slug}:${choice}`;
+}
+
+function getLegacyKey(slug, choice) {
   return `ratings:${slug}:${choice}`;
 }
 
-function getTotalKey(slug) {
+function getTotalKey(sessionId, slug) {
+  return `ratings:${sessionId}:${slug}:total`;
+}
+
+function getLegacyTotalKey(slug) {
   return `ratings:${slug}:total`;
 }
 
@@ -31,7 +47,11 @@ function getRateLimitKey(slug, ip) {
   return `ratings:rate:${slug}:${ip}`;
 }
 
-function getDailyDeviceKey(slug, dateKey, deviceId) {
+function getDailyDeviceKey(sessionId, slug, dateKey, deviceId) {
+  return `rated:${sessionId}:${slug}:${dateKey}:${deviceId}`;
+}
+
+function getLegacyDailyDeviceKey(slug, dateKey, deviceId) {
   return `rated:${slug}:${dateKey}:${deviceId}`;
 }
 
@@ -64,11 +84,12 @@ export function kvStatus() {
   };
 }
 
-export async function incrementRating(slug, choice) {
-  const totalKey = getTotalKey(slug);
+export async function incrementRating(slug, choice, sessionId) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const totalKey = getTotalKey(resolvedSessionId, slug);
 
   if (isKvConfigured) {
-    const choiceKey = getKey(slug, choice);
+    const choiceKey = getKey(resolvedSessionId, slug, choice);
     const choiceResult = await kvRequest(`/incr/${encodeURIComponent(choiceKey)}`);
     const totalResult = await kvRequest(`/incr/${encodeURIComponent(totalKey)}`);
     if (choiceResult !== null && totalResult !== null) {
@@ -76,34 +97,49 @@ export async function incrementRating(slug, choice) {
     }
   }
 
-  const choiceKey = getKey(slug, choice);
+  const choiceKey = getKey(resolvedSessionId, slug, choice);
   memoryStore.set(choiceKey, getMemoryValue(choiceKey) + 1);
   memoryStore.set(totalKey, getMemoryValue(totalKey) + 1);
 }
 
-export async function getRatingSummary(slug) {
+export async function getRatingSummary(slug, sessionId) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const isDefault = resolvedSessionId === defaultSessionId;
+
   if (isKvConfigured) {
-    const keys = choices.map((choice) => getKey(slug, choice));
-    keys.push(getTotalKey(slug));
+    const keys = choices.map((choice) => getKey(resolvedSessionId, slug, choice));
+    keys.push(getTotalKey(resolvedSessionId, slug));
+    if (isDefault) {
+      choices.forEach((choice) => keys.push(getLegacyKey(slug, choice)));
+      keys.push(getLegacyTotalKey(slug));
+    }
     const path = `/mget/${keys.map((key) => encodeURIComponent(key)).join("/")}`;
     const result = await kvRequest(path);
     if (Array.isArray(result)) {
-      const [fun, ok, hard, total] = result;
+      const [fun, ok, hard, total, legacyFun, legacyOk, legacyHard, legacyTotal] = result;
       return {
-        fun: Number(fun ?? 0),
-        ok: Number(ok ?? 0),
-        hard: Number(hard ?? 0),
-        total: Number(total ?? 0),
+        fun: Number(fun ?? 0) + Number(legacyFun ?? 0),
+        ok: Number(ok ?? 0) + Number(legacyOk ?? 0),
+        hard: Number(hard ?? 0) + Number(legacyHard ?? 0),
+        total: Number(total ?? 0) + Number(legacyTotal ?? 0),
         source: "kv",
       };
     }
   }
 
   return {
-    fun: getMemoryValue(getKey(slug, "fun")),
-    ok: getMemoryValue(getKey(slug, "ok")),
-    hard: getMemoryValue(getKey(slug, "hard")),
-    total: getMemoryValue(getTotalKey(slug)),
+    fun:
+      getMemoryValue(getKey(resolvedSessionId, slug, "fun")) +
+      (isDefault ? getMemoryValue(getLegacyKey(slug, "fun")) : 0),
+    ok:
+      getMemoryValue(getKey(resolvedSessionId, slug, "ok")) +
+      (isDefault ? getMemoryValue(getLegacyKey(slug, "ok")) : 0),
+    hard:
+      getMemoryValue(getKey(resolvedSessionId, slug, "hard")) +
+      (isDefault ? getMemoryValue(getLegacyKey(slug, "hard")) : 0),
+    total:
+      getMemoryValue(getTotalKey(resolvedSessionId, slug)) +
+      (isDefault ? getMemoryValue(getLegacyTotalKey(slug)) : 0),
     source: "memory",
   };
 }
@@ -129,11 +165,21 @@ export async function checkRateLimit(ip, slug, ttlSeconds = 30) {
   return true;
 }
 
-export async function registerDailyDeviceRating(slug, deviceId, dateKey) {
+export async function registerDailyDeviceRating(slug, deviceId, dateKey, sessionId) {
+  const resolvedSessionId = normalizeSessionId(sessionId);
+  const isDefault = resolvedSessionId === defaultSessionId;
   const keyDate = dateKey ?? new Date().toISOString().slice(0, 10);
-  const key = getDailyDeviceKey(slug, keyDate, deviceId);
+  const key = getDailyDeviceKey(resolvedSessionId, slug, keyDate, deviceId);
+  const legacyKey = isDefault ? getLegacyDailyDeviceKey(slug, keyDate, deviceId) : null;
 
   if (isKvConfigured) {
+    if (legacyKey) {
+      const legacyExisting = await kvRequest(`/get/${encodeURIComponent(legacyKey)}`);
+      if (legacyExisting !== null) {
+        return { alreadyRated: true, source: "kv" };
+      }
+    }
+
     const path = `/set/${encodeURIComponent(key)}/1?nx=true`;
     const response = await kvRequest(path);
     if (response !== null) {
@@ -150,6 +196,10 @@ export async function registerDailyDeviceRating(slug, deviceId, dateKey) {
   }
 
   if (memoryDailyRatings.has(key)) {
+    return { alreadyRated: true, source: "memory" };
+  }
+
+  if (legacyKey && memoryDailyRatings.has(legacyKey)) {
     return { alreadyRated: true, source: "memory" };
   }
 

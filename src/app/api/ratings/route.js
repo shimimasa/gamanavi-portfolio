@@ -14,6 +14,7 @@ export async function POST(request) {
   const slug = typeof body?.slug === "string" ? body.slug.trim() : "";
   const choice = typeof body?.choice === "string" ? body.choice.trim() : "";
   const deviceId = typeof body?.deviceId === "string" ? body.deviceId.trim() : "";
+  const sessionId = typeof body?.sessionId === "string" ? body.sessionId.trim() : "";
 
   if (!slug || !validSlugs.has(slug)) {
     return NextResponse.json({ error: "invalid_slug" }, { status: 400 });
@@ -36,12 +37,12 @@ export async function POST(request) {
     return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
-  const deviceCheck = await registerDailyDeviceRating(slug, deviceId);
+  const deviceCheck = await registerDailyDeviceRating(slug, deviceId, undefined, sessionId);
   if (deviceCheck.alreadyRated) {
     return NextResponse.json({ ok: true, alreadyRated: true });
   }
 
-  await incrementRating(slug, choice);
+  await incrementRating(slug, choice, sessionId);
 
   return NextResponse.json({ ok: true });
 }
