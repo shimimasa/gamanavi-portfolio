@@ -20,7 +20,7 @@ function chip(text) {
   );
 }
 
-export default async function KidsWorkDetailPage({ params }) {
+export default async function KidsWorkDetailPage({ params, searchParams }) {
   const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
   const defaultHowToPlay = [
     "「▶ ゲームスタート！」を押す",
@@ -30,6 +30,10 @@ export default async function KidsWorkDetailPage({ params }) {
 
   const resolvedParams = await params;
   const workSlug = typeof resolvedParams?.slug === "string" ? resolvedParams.slug.trim() : "";
+  const sessionId =
+    typeof searchParams?.s === "string" && searchParams.s.trim().length > 0
+      ? searchParams.s.trim()
+      : "default";
 
   const work = works.find((item) => (item?.slug ?? "").trim() === workSlug);
   if (!work) return notFound();
@@ -98,7 +102,7 @@ export default async function KidsWorkDetailPage({ params }) {
             </div>
 
             <div className="mt-6">
-              <KidsRatingForm slug={work.slug} />
+              <KidsRatingForm slug={work.slug} sessionId={sessionId} />
             </div>
           </div>
 
