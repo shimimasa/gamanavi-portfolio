@@ -1,6 +1,32 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 
-export default function ParentsHomePage() {
+export default async function ParentsHomePage() {
+  const cookieStore = await cookies();
+  const audience = cookieStore.get("gamanavi_audience")?.value;
+  const isParents = audience === "parents";
+
+  if (!isParents) {
+    return (
+      <div className="space-y-6">
+        <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-8">
+          <h1 className="text-2xl font-semibold sm:text-3xl">保護者向けページです</h1>
+          <p className="mt-3 text-neutral-700">
+            こちらは保護者・先生向けの案内ページです。続きを閲覧する場合は保護者モードへ進んでください。
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href="/kids/parents-gate?next=/parents/works"
+              className="inline-flex items-center justify-center rounded-lg bg-neutral-900 px-5 py-3 text-sm font-semibold text-white hover:bg-neutral-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2"
+            >
+              保護者モードに入る
+            </Link>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <section className="rounded-3xl border border-neutral-200/60 bg-white/90 p-6 shadow-sm sm:p-8">

@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
+    if (
+        request.nextUrl.pathname === "/parents" ||
+        request.nextUrl.pathname === "/parents/"
+    ) {
+        return NextResponse.next();
+    }
+
     const audience = request.cookies.get("gamanavi_audience")?.value;
 
     if (audience !== "parents") {
