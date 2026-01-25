@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const isKids = pathname.startsWith("/kids");
+  const isParents = pathname === "/parents" || pathname.startsWith("/parents/");
   const isActive = (href) => pathname === href;
   const isKidsActive = (href) => pathname === href || pathname.startsWith(`${href}/`);
 
@@ -18,6 +20,15 @@ export default function Header() {
   const brand =
     "inline-flex items-center gap-2 rounded-lg px-2 py-1 text-neutral-900 " +
     "hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 focus-visible:ring-offset-2";
+  const handleExitParentsMode = () => {
+    const cookieBase =
+      "gamanavi_audience=; Max-Age=0; Path=/; SameSite=Lax";
+    document.cookie = cookieBase;
+    if (window.location.protocol === "https:") {
+      document.cookie = `${cookieBase}; Secure`;
+    }
+    router.push("/kids");
+  };
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 px-4 py-3">
@@ -81,6 +92,15 @@ export default function Header() {
               </Link>
             </>
           )}
+          {!isKids && isParents ? (
+            <button
+              type="button"
+              onClick={handleExitParentsMode}
+              className={`${base} border border-neutral-300`}
+            >
+              保護者モード終了
+            </button>
+          ) : null}
         </nav>
       </div>
     </header>
