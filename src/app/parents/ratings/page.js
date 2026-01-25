@@ -1,6 +1,7 @@
 import Link from "next/link";
 import works from "@/content/works.json";
 import { getRatingSummary, kvStatus } from "@/lib/ratingsStore";
+import ParentsRatingsCsvButton from "@/components/ParentsRatingsCsvButton";
 
 function formatPercent(value, total) {
   if (!total) return "0%";
@@ -19,6 +20,14 @@ export default async function ParentsRatingsPage() {
   const ratedSummaries = sorted.filter(({ summary }) => summary.total > 0);
   const unratedSummaries = sorted.filter(({ summary }) => summary.total === 0);
   const status = kvStatus();
+  const csvSummaries = sorted.map(({ work, summary }) => ({
+    slug: work.slug,
+    title: work.title,
+    total: summary.total,
+    fun: summary.fun,
+    ok: summary.ok,
+    hard: summary.hard,
+  }));
 
   return (
     <div className="space-y-6">
@@ -39,12 +48,15 @@ export default async function ParentsRatingsPage() {
               作品ごとの「たのしい / ふつう / むずかしい」の感想をまとめています。
             </p>
           </div>
-          <Link
-            href="/parents/works"
-            className="text-sm font-semibold text-neutral-700 hover:underline"
-          >
-            作品一覧へ →
-          </Link>
+          <div className="flex flex-col items-end gap-3 text-right">
+            <ParentsRatingsCsvButton summaries={csvSummaries} kvConfigured={status.configured} />
+            <Link
+              href="/parents/works"
+              className="text-sm font-semibold text-neutral-700 hover:underline"
+            >
+              作品一覧へ →
+            </Link>
+          </div>
         </div>
       </section>
 
