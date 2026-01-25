@@ -2,6 +2,7 @@ import Link from "next/link";
 import works from "@/content/works.json";
 import { getRatingSummary, kvStatus } from "@/lib/ratingsStore";
 import ParentsRatingsCsvButton from "@/components/ParentsRatingsCsvButton";
+import ParentsSessionBar from "@/components/ParentsSessionBar";
 
 function formatPercent(value, total) {
   if (!total) return "0%";
@@ -9,9 +10,10 @@ function formatPercent(value, total) {
 }
 
 export default async function ParentsRatingsPage({ searchParams }) {
+  const resolvedSearchParams = await searchParams;
   const sessionId =
-    typeof searchParams?.s === "string" && searchParams.s.trim().length > 0
-      ? searchParams.s.trim()
+    typeof resolvedSearchParams?.s === "string" && resolvedSearchParams.s.trim().length > 0
+      ? resolvedSearchParams.s.trim()
       : "default";
   const summaries = await Promise.all(
     works.map(async (work) => ({
@@ -35,6 +37,7 @@ export default async function ParentsRatingsPage({ searchParams }) {
 
   return (
     <div className="space-y-6">
+      <ParentsSessionBar />
       {!status.configured && (
         <section className="rounded-3xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900 shadow-sm sm:px-6 sm:py-5">
           <p className="font-semibold">⚠️ Vercel KV が未設定です</p>
