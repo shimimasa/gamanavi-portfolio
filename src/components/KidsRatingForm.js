@@ -8,9 +8,31 @@ const choices = [
   { id: "hard", label: "むずかしい", emoji: "😣" },
 ];
 
+const deviceCookieName = "gamanavi_device_id";
+
 function getTodayKey(slug) {
   const date = new Date().toISOString().slice(0, 10);
   return `kids-rating:${slug}:${date}`;
+}
+
+function getCookieValue(name) {
+  if (typeof document === "undefined") return "";
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+function ensureDeviceId() {
+  if (typeof document === "undefined") return "";
+  const existing = getCookieValue(deviceCookieName);
+  if (existing) return existing;
+  const newId =
+    (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  document.cookie = `${deviceCookieName}=${encodeURIComponent(
+    newId
+  )}; path=/; max-age=31536000; samesite=lax`;
+  return newId;
 }
 
 export default function KidsRatingForm({ slug }) {
@@ -31,10 +53,12 @@ export default function KidsRatingForm({ slug }) {
     if (status === "submitting" || hasRated) return;
     setStatus("submitting");
 
+    const deviceId = ensureDeviceId();
+
     const response = await fetch("/api/ratings", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug, choice }),
+      body: JSON.stringify({ slug, choice, deviceId }),
     });
 
     if (!response.ok) {
@@ -42,9 +66,11 @@ export default function KidsRatingForm({ slug }) {
       return;
     }
 
+    const data = await response.json().catch(() => ({}));
+
     window.localStorage.setItem(storageKey, choice);
     setHasRated(true);
-    setStatus("submitted");
+    setStatus(data?.alreadyRated ? "already" : "submitted");
   };
 
   return (
@@ -52,9 +78,11 @@ export default function KidsRatingForm({ slug }) {
       <p className="text-sm font-semibold text-neutral-800 sm:text-base">
         このゲームはどうだった？
       </p>
-      {status === "submitted" ? (
+      {status === "submitted" || status === "already" ? (
         <p className="mt-2 text-sm text-neutral-600 sm:text-base">
-          ありがとう！またあそんだらおしえてね。
+          {status === "already"
+            ? "今日はもう送信済みです。あしたまたおしえてね。"
+            : "ありがとう！またあそんだらおしえてね。"}
         </p>
       ) : (
         <>

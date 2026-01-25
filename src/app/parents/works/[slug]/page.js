@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import works from "@/content/works.json";
+import { getRatingSummary } from "@/lib/ratingsStore";
 
 export function generateStaticParams() {
   return works
@@ -19,6 +20,11 @@ function chip(text) {
   );
 }
 
+function formatPercent(value, total) {
+  if (!total) return "0%";
+  return `${Math.round((value / total) * 100)}%`;
+}
+
 export default async function ParentsWorkDetailPage({ params }) {
   const defaultCanDo = ["よみを当てる", "モンスターを仲間にする", "旅してステージを進める"];
   const defaultLearningBody =
@@ -34,6 +40,8 @@ export default async function ParentsWorkDetailPage({ params }) {
 
   const work = works.find((item) => (typeof item.slug === "string" ? item.slug.trim() : "") === workSlug);
   if (!work) return notFound();
+
+  const ratingSummary = await getRatingSummary(work.slug);
 
   const playUrl = typeof work.links?.play === "string" ? work.links.play.trim() : "";
   const isWip = work.status === "wip" || playUrl.length === 0;
@@ -82,6 +90,38 @@ export default async function ParentsWorkDetailPage({ params }) {
               {chip("⏱ 目安：3〜10分")}
               {chip("👤 ひとりでOK")}
               {chip("🏫 授業導入／支援教室／家庭学習")}
+            </div>
+
+            <div className="mt-5 rounded-2xl border border-neutral-200/60 bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
+              <p className="text-xs font-semibold text-neutral-500">こども評価ミニ集計</p>
+              {ratingSummary.total === 0 ? (
+                <p className="mt-2 text-sm text-neutral-500">まだ評価はありません。</p>
+              ) : (
+                <div className="mt-2 space-y-2 text-xs sm:text-sm">
+                  <div className="flex items-center justify-between">
+                    <span>たのしい 😀</span>
+                    <span className="font-semibold">
+                      {ratingSummary.fun} ({formatPercent(ratingSummary.fun, ratingSummary.total)})
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>ふつう 😐</span>
+                    <span className="font-semibold">
+                      {ratingSummary.ok} ({formatPercent(ratingSummary.ok, ratingSummary.total)})
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>むずかしい 😣</span>
+                    <span className="font-semibold">
+                      {ratingSummary.hard} ({formatPercent(ratingSummary.hard, ratingSummary.total)})
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-[11px] text-neutral-500">
+                    <span>合計</span>
+                    <span>{ratingSummary.total}件</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
