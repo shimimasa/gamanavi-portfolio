@@ -59,7 +59,7 @@ export default function HomePage() {
           </h2>
           <p className="text-base text-neutral-700">
             gamanavi は、学習に困難を抱える子ども向けに制作したゲーム教材を実際に使ってもらい、
-            どこでつまずき、どう変化したかを観察し、改善につなげる小規模実証プラットフォームです。
+            つまずきや変化を観察して改善につなげる小規模実証プラットフォームです。
           </p>
           <p className="text-sm text-neutral-600">
             現在は「漢字ヨミタビ」「ねこもじなぞり」を中心に検証しています。
@@ -94,7 +94,9 @@ export default function HomePage() {
               {work.subtitle ? (
                 <p className="mt-1 text-xs text-neutral-600">{work.subtitle}</p>
               ) : null}
-              <p className="mt-3 text-sm text-neutral-700 sm:text-base">{work.oneLiner}</p>
+              <p className="mt-3 line-clamp-2 text-sm text-neutral-700 sm:text-base">
+                {work.oneLiner}
+              </p>
               <div className="mt-4 rounded-2xl bg-neutral-50 px-4 py-3 text-sm text-neutral-700">
                 <span className="font-semibold text-neutral-900">
                   このゲームで見ていること：
@@ -139,7 +141,7 @@ export default function HomePage() {
             作品一覧
           </Link>
           <Link href="/research" className="hover:underline">
-            研究メモ
+            研究メモを見る
           </Link>
           <Link href="/about" className="hover:underline">
             自己紹介

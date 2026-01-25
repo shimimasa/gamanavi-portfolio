@@ -208,7 +208,7 @@ export default async function WorkDetailPage({ params }) {
           </ul>
           <div className="mt-4 text-sm text-neutral-600">
             <Link href="/research" className="hover:underline">
-              研究メモもあわせて見る →
+              研究メモを見る →
             </Link>
           </div>
         </section>
@@ -291,7 +291,7 @@ export default async function WorkDetailPage({ params }) {
           ← 制作物一覧へ
         </Link>
         <Link href="/research" className="text-sm text-neutral-700 hover:underline">
-          研究メモ →
+          研究メモを見る →
         </Link>
         <Link href="/contact" className="text-sm text-neutral-700 hover:underline">
           お問い合わせ →
