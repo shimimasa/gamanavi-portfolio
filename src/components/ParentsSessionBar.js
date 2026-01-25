@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { formatSessionLabel } from "@/lib/sessionLabel";
 
 const SESSION_SUFFIX_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -23,6 +24,7 @@ export default function ParentsSessionBar({ initialMemo = "" }) {
     const value = searchParams?.get("s");
     return value && value.trim().length > 0 ? value.trim() : "default";
   }, [searchParams]);
+  const sessionLabel = useMemo(() => formatSessionLabel(sessionId), [sessionId]);
 
   const kidsLink = useMemo(() => {
     const encoded = encodeURIComponent(sessionId);
@@ -109,9 +111,13 @@ export default function ParentsSessionBar({ initialMemo = "" }) {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
           <p className="text-sm font-semibold text-indigo-900">先生用セッション操作バー</p>
+          <p className="text-xs text-indigo-700">
+            セッションは授業・支援の1回分をまとめる単位です。
+          </p>
           <div className="text-sm text-indigo-900">
-            現在のセッションID: <span className="font-semibold">{sessionId}</span>
+            現在の授業セッション: <span className="font-semibold">{sessionLabel.label}</span>
           </div>
+          <div className="text-xs text-indigo-700">{sessionLabel.sub}</div>
           <div className="flex flex-wrap items-center gap-2 text-xs text-indigo-800 sm:text-sm">
             <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-indigo-900 shadow-sm">
               kids用リンク
@@ -120,6 +126,9 @@ export default function ParentsSessionBar({ initialMemo = "" }) {
               {kidsLink}
             </code>
           </div>
+          <p className="text-xs text-indigo-700">
+            このリンクで開いた評価は、現在の授業セッションに紐付きます。
+          </p>
           <div className="flex flex-wrap items-end gap-2 text-xs text-indigo-900 sm:text-sm">
             <div className="flex flex-col gap-1">
               <label htmlFor="session-memo" className="text-xs font-semibold text-indigo-800">
