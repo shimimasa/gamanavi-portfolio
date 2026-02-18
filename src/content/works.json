@@ -67,7 +67,7 @@
       "oneLiner": "スピード勝負の計算トレーニング！正確さと速さを鍛えよう！",
       "status": "live",
       "thumb": "/works/placeholder-3.webp",
-      "previewVideo": "/videos/calculation-splint-preview.mp4",
+      "previewVideo": "/videos/calculation-sprint-preview.mp4",
       "links": { "play": "https://calculation.splint.gamanavi.com/", 
                  "github": "https://github.com/shimimasa/calculation-splint",
                  "note": "" },
