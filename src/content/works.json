@@ -45,6 +45,23 @@
     },
     {
       "id": "placeholder-3",
+      "slug": "calculation-splint",
+      "title": "計算スプリント",
+      "subtitle": "〜スピード勝負の計算トレーニング〜",
+      "category": "game",
+      "audience": "小学生〜中学生向け",
+      "oneLiner": "スピード勝負の計算トレーニング！正確さと速さを鍛えよう！",
+      "status": "live",
+      "thumb": "/works/placeholder-3.webp",
+      "previewVideo": "/videos/calculation-splint-preview.mp4",
+      "links": { "play": "https://calculation.splint.gamanavi.com/", 
+                 "github": "https://github.com/shimimasa/calculation-splint",
+                 "note": "" },
+      "subjectTags": ["算数"],
+      "featureTags": ["スプリント", "計算", "速さ"]
+    },
+    {
+      "id": "placeholder-4",
       "slug": "sudoku-puzzle",
       "title": "すうどくすてっぷ",
       "subtitle": "〜こども向け 数のロジックパズル〜",
@@ -54,7 +71,7 @@
       "status": "live",
       "featured": true,
       "featuredOrder": 3,
-      "thumb": "/works/placeholder-3.webp",
+      "thumb": "/works/placeholder-4.webp",
       "previewVideo": "/videos/sudoku-puzzle-preview.mp4",
       "links": {
         "play": "https://sudoku.gamanavi.com/",
@@ -74,7 +91,7 @@
       ]
     },
     {
-      "id": "placeholder-4",
+      "id": "placeholder-5",
       "slug": "keisan-pirmid",
       "title": "計算ピラミッド",
       "subtitle": "〜考えてのぼる算数チャレンジ〜",
@@ -82,7 +99,7 @@
       "audience": "小学生〜中学生向け",
       "oneLiner": "ピラミッドをのぼりながら、計算にチャレンジ！",
       "status": "wip",
-      "thumb": "/works/placeholder-3.webp",
+      "thumb": "/works/placeholder-5.webp",
       "links": { "play": "", "github": "", "note": "" },
       "subjectTags": ["算数"],
       "featureTags": ["ピラミッド", "計算", "チャレンジ"]
