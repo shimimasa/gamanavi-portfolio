@@ -68,7 +68,7 @@
       "status": "live",
       "thumb": "/works/placeholder-3.webp",
       "previewVideo": "/videos/calculation-sprint-preview.mp4",
-      "links": { "play": "https://calculation.splint.gamanavi.com/", 
+      "links": { "play": "https://calculation.sprint.gamanavi.com/", 
                  "github": "https://github.com/shimimasa/calculation-splint",
                  "note": "" },
       "subjectTags": ["算数"],
